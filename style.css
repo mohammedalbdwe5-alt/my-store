@@ -1,0 +1,364 @@
+/* ====== Base ====== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#3b82f6;--card:#161b22;--glass:rgba(255,255,255,0.06);--text:#e5e7eb;--muted:#9ca3af}
+
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#0d1117;color:var(--text);overflow-x:hidden}
+
+body[data-theme="light"]{
+    --primary:#2563eb;
+    --card:#ffffff;
+    --glass:rgba(0,0,0,0.06);
+    --text:#111827;
+    --muted:#4d5563;
+    background: #f3f4f6;
+    color: #111827;
+}
+
+body[data-theme="light"] .btn.icon{
+    background: #e5e7eb;
+    color: #111;
+}
+
+body[data-theme="light"] .chip{
+    background: #e5e7eb;
+    color: #111;
+}
+
+body[data-theme="light"] .search input{
+    background: #e5e7eb;
+    color: #111;
+}
+
+.container{width:90%;max-width:1200px;margin:auto}
+.glass{background:var(--glass);backdrop-filter:blur(12px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+/* ====== Header ====== */
+.header{position:fixed;top:0;padding:14px 0;z-index:1000;width:100%;transition:top 0.3s;height:11%;}
+.header-hidden{top:-80px;}
+.nav{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:400;font-size:40px;letter-spacing:.8px}
+.actions{display:flex;gap:10px;align-items:center}
+.select{background:#1f2937;color:#fff;border:none;border-radius:10px;padding:10px 12px}
+.btn{padding:10px 16px;background:var(--primary);border:none;border-radius:10px;cursor:pointer;font-weight:700;color:#fff}
+.btn.icon{background:#1f2937}
+.btn.cart-btn{border-radius:24px}
+.btn.danger{background:#ef4444}
+/* ====== Hero ====== */
+.hero{text-align:center;padding:72px 20px}
+.hero h1{font-size:40px;color:var(--primary);margin-bottom:6px}
+.hero p{font-size:18px;color:var(--muted)}
+/* ====== Filters/Search ====== */
+.filters{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#1f2937;color:#fff;border:none;border-radius:20px;padding:8px 14px;cursor:pointer}
+.chip.active{outline:2px solid var(--primary)}
+.search input{width:260px;max-width:100%;padding:12px 14px;border-radius:20px;border:none;background:#111827;color:#e5e7eb}
+/* ====== Products Grid ====== */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;padding-bottom:40px}
+.card{background:var(--card);padding:16px;border-radius:16px;text-align:center;transition:.3s;border:1px solid #2a2f35}
+.card:hover{transform:translateY(-6px);box-shadow:0 0 22px rgba(59,130,246,.35)}
+.card img{width:100%;border-radius:12px}
+.card h3{margin:8px 0 4px}
+.card .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+.card .price{font-weight:800;margin:6px 0 10px}
+/* ====== Modal / Cart ====== */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000}
+.modal-content{width:92%;max-width:520px;margin:80px auto;padding:20px;border-radius:18px}
+.item{display:flex;justify-content:space-between;align-items:center;background:#0f1620;border:1px solid #273041;border-radius:12px;padding:10px;margin:8px 0}
+.qty{display:flex;gap:8px;align-items:center}
+.qty button{width:28px;height:28px;border-radius:8px;border:none;background:#1f2937;color:#fff;cursor:pointer}
+.cart-actions{display:flex;justify-content:space-between;margin-top:10px}
+.total{margin-top:8px}
+/* ====== Toast ====== */
+#toast{position:fixed;bottom:26px;right:26px;background:var(--primary);color:white;padding:12px 18px;border-radius:10px;display:none;z-index:3000}
+/* ====== Responsive ====== */
+@media (max-width:600px){
+    .filters{flex-direction:column;align-items:stretch}
+    .search{width:100%}
+    .search input{width:100%}
+}
+.add-popup{position:fixed;opacity:0;transition:.3s ease;z-index:2000;align-items:center;justify-content:center;pointer-events:none;display:flex;inset:0;}
+.add-popup.show{opacity:1;transform:translateY(0);}
+.add-popup .circle{width:120px;height:120px;background:#22c55e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:60px;color:white;animation:pop 0.45s ease-out;box-shadow:0 0 25px rgba(34,197,94,0.6);}
+
+@keyframes pop{
+    0%{transform:scale(0.3);opacity:0;}
+    50%{transform:scale(1.1);opacity:1;}
+    70%{transform:scale(1);opacity:1;}
+}
+
+/* ====== ميزات جديدة ====== */
+
+/* ====== تفاصيل المنتج (Modal) ====== */
+.product-detail-modal .modal-content {
+    max-width: 800px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.product-detail-modal .product-image {
+    flex: 1;
+}
+.product-detail-modal .product-image img {
+    width: 100%;
+    border-radius: 12px;
+}
+.product-detail-modal .product-info {
+    flex: 1;
+    text-align: right;
+}
+.product-detail-modal .product-info h2 {
+    margin-bottom: 10px;
+}
+.product-detail-modal .product-info .price {
+    font-size: 24px;
+    color: var(--primary);
+    margin: 10px 0;
+}
+.product-detail-modal .product-info .meta {
+    margin: 10px 0;
+    color: var(--muted);
+}
+.product-detail-modal .product-info .description {
+    margin: 15px 0;
+    line-height: 1.6;
+}
+.product-detail-modal .product-info .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+/* ====== التقييمات ====== */
+.ratings-section {
+    margin-top: 20px;
+}
+.rating-item {
+    background: var(--card);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #2a2f35;
+}
+.rating-item .rating-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.rating-item .rating-stars {
+    color: gold;
+}
+.add-rating {
+    margin-top: 20px;
+}
+.add-rating textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #2a2f35;
+    background: var(--card);
+    color: var(--text);
+    margin-bottom: 10px;
+}
+.star-rating {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+    direction: ltr; /* للحفاظ على ترتيب النجوم */
+}
+.star-rating span {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s;
+}
+.star-rating span.active,
+.star-rating span:hover {
+    color: gold;
+}
+/* ====== المفضلة ====== */
+.wishlist-btn {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-size: 20px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.wishlist-btn.active {
+    background: var(--primary);
+    color: white;
+}
+/* ====== إتمام الشراء ====== */
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.checkout-form input,
+.checkout-form textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2a2f35;
+    background: var(--card);
+    color: var(--text);
+    width: 100%;
+}
+.checkout-form .form-row {
+    display: flex;
+    gap: 10px;
+}
+.checkout-form .form-row input {
+    flex: 1;
+}
+/* ====== تحسين البحث (فلتر السعر) ====== */
+.price-filter {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+.price-filter input {
+    width: 100px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #2a2f35;
+    background: var(--card);
+    color: var(--text);
+}
+.price-filter button {
+    padding: 8px 16px;
+}
+/* ====== إحصائيات سريعة ====== */
+.stats-bar {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 1px solid #2a2f35;
+}
+.stat-item {
+    text-align: center;
+}
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+}
+.stat-label {
+    color: var(--muted);
+    font-size: 14px;
+}
+/* ====== صفحة "من نحن" (نبذة) ====== */
+.about-section {
+    background: var(--card);
+    padding: 30px;
+    border-radius: 16px;
+    margin: 40px 0;
+    text-align: center;
+    border: 1px solid #2a2f35;
+}
+.about-section h2 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+.about-section p {
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 800px;
+    margin: 0 auto;
+}
+/* ====== Lazy loading ====== */
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+img.lazy.loaded {
+    opacity: 1;
+}
+/* ====== تبديل اللغة ====== */
+.lang-toggle {
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* ====== تحسينات للأجهزة الصغيرة ====== */
+@media (max-width: 768px) {
+    .product-detail-modal .modal-content {
+        flex-direction: column;
+    }
+    .checkout-form .form-row {
+        flex-direction: column;
+    }
+}
+        /* ====== شريط جانبي (Drawer) ====== */
+.drawer-toggle {
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+    background: var(--card);
+    border-left: 1px solid #2a2f35;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+    transition: right 0.3s ease;
+    z-index: 2001;
+    padding: 20px;
+    overflow-y: auto;
+}
+.drawer.open {
+    right: 0;
+}
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    display: none;
+}
+.drawer-backdrop.open {
+    display: block;
+}
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a2f35;
+}
+.drawer-close {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+}
+.drawer-section {
+    margin-bottom: 25px;
+}
+.drawer-section h4 {
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+.drawer-section .chip {
+    display: inline-block;
+    margin: 5px;
+}

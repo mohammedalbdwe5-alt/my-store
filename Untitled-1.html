@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>متجري الاحترافي</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header class="header glass">
+        <nav class="container nav">
+            <div class="logo">متجري الاحترافي</div>
+            <div class="actions">
+                <button class="drawer-toggle" onclick="openDrawer()">☰</button>
+                <button class="btn cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 id="hero-title">تسوّق بذكاء</h1>
+        <p id="hero-text">أفضل المنتجات بتصميم داكن فخم وسرعة عالية وتجربة مثالية.</p>
+    </section>
+
+    <!-- شريط الإحصائيات -->
+    <div class="container stats-bar" id="stats-bar"></div>
+
+    <!-- فلاتر سريعة (تبقى كما هي لكن قد نخفيها في الشاشات الصغيرة) -->
+    <div class="filters container">
+        <div class="chips">
+            <button class="chip active" data-cat="all" onclick="filterByCategory('all', this)">الكل</button>
+            <button class="chip" data-cat="هواتف" onclick="filterByCategory('هواتف', this)">هواتف</button>
+            <button class="chip" data-cat="إكسسوارات" onclick="filterByCategory('إكسسوارات', this)">إكسسوارات</button>
+            <button class="chip" data-cat="أجهزة" onclick="filterByCategory('أجهزة', this)">أجهزة</button>
+        </div>
+        <div class="search">
+            <input id="search" placeholder="ابحث عن منتج…" oninput="debouncedRender()" />
+        </div>
+    </div>
+
+    <section class="products container" id="products"></section>
+
+    <!-- قسم "من نحن" -->
+    <section class="container about-section">
+        <h2 id="about-heading">من نحن</h2>
+        <p id="about-text">متجري الاحترافي هو وجهتك الأولى لأحدث الأجهزة والإكسسوارات بأسعار مناسبة وجودة عالية.</p>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart" onclick="closeOnBackdrop(event)">
+        <div class="modal-content glass" role="dialog" aria-modal="true">
+            <h3>سلة المشتريات</h3>
+            <div id="items"></div>
+            <p class="total"><b>الإجمالي:</b> <span id="total">0</span></p>
+            <div class="cart-actions">
+                <button class="btn danger" onclick="clearCart()" id="clearCartBtn">تفريغ السلة</button>
+                <button class="btn" onclick="showCheckout()" id="checkoutBtn">إتمام الشراء</button>
+                <button class="btn close" onclick="toggleCart()" id="closeCartBtn">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drawer (شريط جانبي) -->
+    <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h3 id="drawer-title">الفلاتر</h3>
+            <button class="drawer-close" onclick="closeDrawer()">✖</button>
+        </div>
+        <div class="drawer-section">
+            <h4>التصنيفات</h4>
+            <button class="chip" onclick="filterByCategory('all', this)" id="drawer-all">الكل</button>
+            <button class="chip" onclick="filterByCategory('هواتف', this)" id="drawer-phones">هواتف</button>
+            <button class="chip" onclick="filterByCategory('إكسسوارات', this)" id="drawer-accessories">إكسسوارات</button>
+            <button class="chip" onclick="filterByCategory('أجهزة', this)" id="drawer-devices">أجهزة</button>
+        </div>
+        <div class="drawer-section">
+            <h4 id="drawer-sort-label">الترتيب</h4>
+            <select id="sort" class="select" onchange="applySort()" style="width:100%">
+                <option value="default">الترتيب</option>
+                <option value="price-asc">السعر: من الأرخص للأغلى</option>
+                <option value="price-desc">السعر: من الأغلى للأرخص</option>
+                <option value="name-asc">الاسم: أ → ي</option>
+            </select>
+        </div>
+        <div class="drawer-section">
+            <h4 id="drawer-price-label">السعر</h4>
+            <div style="display:flex; gap:5px;">
+                <input type="number" id="min-price" placeholder="الحد الأدنى" min="0" style="width:45%; padding:8px;">
+                <input type="number" id="max-price" placeholder="الحد الأقصى" min="0" style="width:45%; padding:8px;">
+            </div>
+            <button class="btn" onclick="applyPriceFilter()" style="width:100%; margin-top:10px;" id="drawer-apply">تطبيق</button>
+        </div>
+        <div class="drawer-section">
+            <h4 id="drawer-language-label">اللغة</h4>
+            <button class="btn icon" onclick="toggleLanguage()" id="drawer-lang-btn" style="width:100%;">English</button>
+        </div>
+        <div class="drawer-section">
+            <h4 id="drawer-theme-label">الوضع</h4>
+            <button class="btn" onclick="toggleTheme('dark')" id="drawer-dark-option">داكن</button>
+            <button class="btn" onclick="toggleTheme('light')" id="drawer-light-option">فاتح</button>
+        </div>
+    </div>
+
+    <!-- Toast & Popup -->
+    <div id="toast" role="status" aria-live="polite"></div>
+    <div id="added" class="add-popup"><div class="circle">✅</div></div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+    emailjs.init('service_bzjvjbd');
+    </script>
+</body>
+</html>
