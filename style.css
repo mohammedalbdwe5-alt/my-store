@@ -236,8 +236,8 @@ body[data-theme="light"] .search input{
     border-radius: 12px;
     margin: 20px 0;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    justify-content: center;
+    flex-wrap: flex;
     gap: 15px;
     border: 1px solid #2a2f35;
 }
