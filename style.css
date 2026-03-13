@@ -236,9 +236,9 @@ body[data-theme="light"] .search input{
     border-radius: 12px;
     margin: 20px 0;
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 15px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 40px;
     border: 1px solid #2a2f35;
 }
 .stat-item {
@@ -261,6 +261,9 @@ body[data-theme="light"] .search input{
     margin: 40px 0;
     text-align: center;
     border: 1px solid #2a2f35;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .about-section h2 {
     margin-bottom: 15px;
@@ -269,7 +272,7 @@ body[data-theme="light"] .search input{
 .about-section p {
     line-height: 1.8;
     color: var(--muted);
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
 }
 /* ====== Lazy loading ====== */
@@ -291,12 +294,75 @@ img.lazy.loaded {
     font-weight: bold;
 }
 /* ====== تحسينات للأجهزة الصغيرة ====== */
-@media (max-width: 768px) {
-    .product-detail-modal .modal-content {
-        flex-direction: column;
+@media (max-width: 600px) {
+ .stats-bar {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px 10px;
     }
-    .checkout-form .form-row {
+    .stat-value {
+        font-size: 20px;
+    }
+    .stat-label {
+        font-size: 12px;
+    }
+
+    /* شبكة المنتجات */
+    .products {
+        grid-template-columns: 1fr; /* بطاقة واحدة في كل صف */
+        gap: 15px;
+    }
+
+    /* بطاقة المنتج */
+    .card {
+        padding: 12px;
+    }
+    .card h3 {
+        font-size: 16px;
+    }
+    .card .meta {
+        font-size: 12px;
+    }
+    .card .price {
+        font-size: 18px;
+    }
+    .card .btn, .card .wishlist-btn {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    /* شريط الفلاتر والبحث */
+    .filters {
         flex-direction: column;
+        align-items: stretch;
+    }
+    .chips {
+        justify-content: center;
+    }
+    .search input {
+        width: 100%;
+    }
+
+    /* شريط التنقل (الهيدر) */
+    .logo {
+        font-size: 28px; /* تصغير الشعار */
+    }
+    .btn.cart-btn {
+        padding: 8px 12px;
+    }
+
+    /* شريط جانبي (Drawer) */
+    .drawer {
+        width: 85%; /* جعل الشريط الجانبي يأخذ مساحة أكبر من الشاشة */
+        right: -85%;
+    }
+    .drawer.open {
+        right: 0;
+    }
+
+    /* نافذة تفاصيل المنتج */
+    .product-detail-modal .modal-content {
+        flex-direction: column;  padding: 15px;
     }
 }
         /* ====== شريط جانبي (Drawer) ====== */
@@ -361,4 +427,16 @@ img.lazy.loaded {
 .drawer-section .chip {
     display: inline-block;
     margin: 5px;
+}
+/
+@media (max-width: 400px) {
+    .hero h1 {
+        font-size: 30px;
+    }
+    .hero p {
+        font-size: 16px;
+    }
+    .card .meta {
+        font-size: 11px;
+    }
 }
