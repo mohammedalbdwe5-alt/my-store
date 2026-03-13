@@ -699,6 +699,5 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         allChip.classList.add('active');
     }
-    // إعادة الرسم
-    render();
 });
+rendwr();
