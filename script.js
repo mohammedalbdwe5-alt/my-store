@@ -700,4 +700,4 @@ document.addEventListener('DOMContentLoaded', function() {
         allChip.classList.add('active');
     }
 });
-rendwr();
+render();
