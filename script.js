@@ -156,7 +156,18 @@ function updateUILanguage() {
     // إعادة عرض البيانات المتعلقة بالتطبيق
     render(); // إعادة عرض المنتجات لتحديث النصوص داخل البطاقات
 }
-
+function getTranslation(key) {
+    try {
+        // التحقق من وجود اللغة في الترجمة
+        if (translations && translations[state.lang] && translations[state.lang][key]) {
+            return translations[state.lang][key];
+        }
+        return key; // إذا لم توجد الترجمة، نعيد المفتاح نفسه
+    } catch (e) {
+        console.warn('Translation error for key:', key, e);
+        return key;
+    }
+}
 // =================================================
 // =====   تبديل اللغة بين العربية والإنجليزية   =====
 // =================================================
