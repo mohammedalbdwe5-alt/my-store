@@ -703,3 +703,14 @@ async function submitOrder(event) {
         submitBtn.textContent = getTranslation('checkout');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // تأكد أن التصنيف النشط هو "الكل"
+    const allChip = document.querySelector('.chip[data-cat="all"]');
+    if (allChip) {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        allChip.classList.add('active');
+    }
+    // إعادة الرسم
+    render();
+});
