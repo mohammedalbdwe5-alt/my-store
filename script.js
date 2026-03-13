@@ -360,7 +360,12 @@ function loadWishlist() {
     try { return JSON.parse(localStorage.getItem('wishlist')) || []; } catch(e){ return []; }
 }
 function persistWishlist() { localStorage.setItem('wishlist', JSON.stringify(wishlist)); }
-function updateWishlistUI() { $('#wishlist-count').textContent = wishlist.length; }
+function updateWishlistUI() {
+    const el = $('#wishlist-count');
+    if(el){
+        el.textContent = wishlist.length;
+    }
+}
 function toggleWishlist(id) {
     const index = wishlist.indexOf(id);
     if (index === -1) {
