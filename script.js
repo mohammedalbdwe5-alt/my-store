@@ -53,6 +53,18 @@ function loadStorageData(key) {
 function persistStorageData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
+function render() {
+    const filteredProducts = applyFilters();
+    console.log(filteredProducts); // طباعة المنتجات بعد الفلترة
+
+    $("#products").innerHTML = filteredProducts.map(product => `
+        <div class="card" data-id="${product.id}">
+            <img src="${product.img}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <div>${LYD.format(product.price)}</div>
+        </div>
+    `).join("");
+}
 // =================================================
 // =====      ترجمة النصوص وتحديث اللغة       =====
 // =================================================
