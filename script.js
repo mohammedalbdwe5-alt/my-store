@@ -339,18 +339,6 @@ function updateCartUI(){
     const total = cart.reduce((s,i)=>s + i.price*i.qty,0);
     $('#total').textContent = LYD.format(total);
 }
-function getTranslation(key) {
-    try {
-        // التحقق من وجود اللغة في الترجمة
-        if (translations && translations[state.lang] && translations[state.lang][key]) {
-            return translations[state.lang][key];
-        }
-        return key; // إذا لم توجد الترجمة، نعيد المفتاح نفسه
-    } catch (e) {
-        console.warn('Translation error for key:', key, e);
-        return key;
-    }
-}
 
 function persistCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
 function loadCart(){ try{ return JSON.parse(localStorage.getItem('cart'))||[] }catch(e){ return []; } }
