@@ -13,7 +13,7 @@
             <div class="actions">
                 <button class="drawer-toggle" onclick="openDrawer()">☰</button>
                 <button class="btn cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
-<button class="btn">❤️ <span id="wishlist-count">0</span></button>
+                <button class="btn" onclick="toggleWishlistModal()">❤️ <span id="wishlist-count">0</span></button>
             </div>
         </nav>
     </header>
@@ -26,7 +26,7 @@
     <!-- شريط الإحصائيات -->
     <div class="container stats-bar" id="stats-bar"></div>
 
-    <!-- فلاتر سريعة (تبقى كما هي لكن قد نخفيها في الشاشات الصغيرة) -->
+    <!-- فلاتر سريعة -->
     <div class="filters container">
         <div class="chips">
             <button class="chip active" data-cat="all" onclick="filterByCategory('all', this)">الكل</button>
@@ -42,7 +42,7 @@
     <section class="products container" id="products"></section>
 
     <!-- قسم "من نحن" -->
-    <section class="container about-section">
+    <section class="about-section" id="about">
         <h2 id="about-heading">من نحن</h2>
         <p id="about-text">متجري الاحترافي هو وجهتك الأولى لأحدث الأجهزة والإكسسوارات بأسعار مناسبة وجودة عالية.</p>
     </section>
@@ -56,8 +56,85 @@
             <div class="cart-actions">
                 <button class="btn danger" onclick="clearCart()" id="clearCartBtn">تفريغ السلة</button>
                 <button class="btn" onclick="showCheckout()" id="checkoutBtn">إتمام الشراء</button>
-                <button class="btn close" onclick="toggleCart()" id="closeCartBtn">إغلاق</button>
+                <button class="btn close-btn" onclick="toggleCart()" id="closeCartBtn">إغلاق</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal" onclick="closeCheckoutBackdrop(event)">
+        <div class="modal-content glass checkout-modal-content" role="dialog" aria-modal="true">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3 id="checkout-title">إتمام الشراء</h3>
+                <button class="btn icon" onclick="closeCheckout()">✖</button>
+            </div>
+
+            <!-- ملخص الطلب -->
+            <div class="order-summary" id="order-summary"></div>
+
+            <form id="checkout-form" class="checkout-form" onsubmit="submitOrder(event)">
+                <!-- بيانات شخصية -->
+                <div class="form-section">
+                    <h4 id="checkout-personal-label">البيانات الشخصية</h4>
+                    <input type="text" id="checkout-name" placeholder="الاسم الكامل *" required />
+                    <div class="form-row">
+                        <input type="tel" id="checkout-phone" placeholder="رقم الهاتف (مثال: +218912345678 أو 0912345678) *" required />
+                        <input type="email" id="checkout-email" placeholder="البريد الإلكتروني (اختياري)" />
+                    </div>
+                </div>
+
+                <!-- بيانات التوصيل -->
+                <div class="form-section">
+                    <h4 id="checkout-delivery-label">عنوان التوصيل</h4>
+                    <input type="text" id="checkout-address" placeholder="العنوان التفصيلي *" required />
+                    <div class="form-row">
+                        <input type="text" id="checkout-city" placeholder="المدينة *" required />
+                        <input type="text" id="checkout-zip" placeholder="الرمز البريدي (اختياري)" />
+                    </div>
+                </div>
+
+                <!-- طريقة الدفع -->
+                <div class="form-section">
+                    <h4 id="checkout-payment-label">طريقة الدفع</h4>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="cod" checked onchange="toggleReceiptField()" />
+                            <span>💵 الدفع عند التوصيل</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment-method" value="transfer" onchange="toggleReceiptField()" />
+                            <span>🏦 تحويل بنكي</span>
+                        </label>
+                    </div>
+
+                    <!-- معلومات التحويل البنكي -->
+                    <div id="bank-info" style="display:none;" class="bank-info-box">
+                        <p>اسم صاحب الحساب: <b>محمد عبد السلام محمد صالح</b></p>
+                        <p>مصرف الصحاري: <b>2010393957</b></p>
+                        <p>IBAN: <b>LY62006020000002010393957</b></p>
+                        <div class="file-upload-area">
+                            <label for="receipt-image">📎 ارفع صورة الإيصال *</label>
+                            <input type="file" id="receipt-image" accept="image/*" />
+                        </div>
+                        <div id="upload-progress" style="display:none; color:var(--primary); margin-top:8px;"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" id="submit-order-btn" style="width:100%;padding:14px;font-size:16px;">
+                    ✅ تأكيد الطلب
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div class="modal" id="wishlist-modal" onclick="closeWishlistBackdrop(event)">
+        <div class="modal-content glass" role="dialog" aria-modal="true">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                <h3 id="wishlist-title">المفضلة</h3>
+                <button class="btn icon" onclick="toggleWishlistModal()">✖</button>
+            </div>
+            <div id="wishlist-items"></div>
         </div>
     </div>
 
@@ -82,13 +159,16 @@
                 <option value="price-asc">السعر: من الأرخص للأغلى</option>
                 <option value="price-desc">السعر: من الأغلى للأرخص</option>
                 <option value="name-asc">الاسم: أ → ي</option>
+                <option value="rating-desc">التقييم: الأعلى أولاً</option>
             </select>
         </div>
         <div class="drawer-section">
             <h4 id="drawer-price-label">السعر</h4>
             <div style="display:flex; gap:5px;">
-                <input type="number" id="min-price" placeholder="الحد الأدنى" min="0" style="width:45%; padding:8px;">
-                <input type="number" id="max-price" placeholder="الحد الأقصى" min="0" style="width:45%; padding:8px;">
+                <input type="number" id="min-price" placeholder="الحد الأدنى" min="0"
+                    style="width:45%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text);">
+                <input type="number" id="max-price" placeholder="الحد الأقصى" min="0"
+                    style="width:45%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text);">
             </div>
             <button class="btn" onclick="applyPriceFilter()" style="width:100%; margin-top:10px;" id="drawer-apply">تطبيق</button>
         </div>
@@ -98,8 +178,10 @@
         </div>
         <div class="drawer-section">
             <h4 id="drawer-theme-label">الوضع</h4>
-            <button class="btn" onclick="toggleTheme('dark')" id="drawer-dark-option">داكن</button>
-            <button class="btn" onclick="toggleTheme('light')" id="drawer-light-option">فاتح</button>
+            <div style="display:flex;gap:8px;">
+                <button class="btn" onclick="toggleTheme('dark')" id="drawer-dark-option" style="flex:1;">داكن</button>
+                <button class="btn" onclick="toggleTheme('light')" id="drawer-light-option" style="flex:1;">فاتح</button>
+            </div>
         </div>
     </div>
 
@@ -110,7 +192,7 @@
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-    emailjs.init('service_bzjvjbd');
+        emailjs.init('service_bzjvjbd');
     </script>
 </body>
 </html>
