@@ -736,7 +736,7 @@ async function submitOrder(event) {
 
         // emailjs.send(serviceID, templateID, params)
         // Replace 'template_XXXXXXX' with your real EmailJS template ID
-        await emailjs.send('service_bzjvjbd', 'template_XXXXXXX', {
+        await emailjs.send('service_bzjvjbd', 'template_0qtw5sv', {
             to_name: 'صاحب المتجر',
             from_name: name,
             from_email: email || 'غير مقدم',
