@@ -186,6 +186,8 @@ function updateUILanguage() {
         mainChips.querySelectorAll('.chip[data-cat="هواتف"]').forEach(el => el.textContent = getTranslation('phones'));
         mainChips.querySelectorAll('.chip[data-cat="إكسسوارات"]').forEach(el => el.textContent = getTranslation('accessories'));
         mainChips.querySelectorAll('.chip[data-cat="أجهزة"]').forEach(el => el.textContent = getTranslation('devices'));
+        mainChips.querySelectorAll('.chip[data-cat="Arvea"]').forEach(el => el.textContent = getTranslation('Arvea'));
+        
     }
 
     // Sort options
