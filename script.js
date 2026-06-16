@@ -736,9 +736,7 @@ async function submitOrder(event) {
 
         // emailjs.send(serviceID, templateID, params)
         // Replace 'template_XXXXXXX' with your real EmailJS template ID
-        try {
-
-    const response = await emailjs.send(
+     await emailjs.send(
         'service_bzjvjbd',
         'template_0qtw5sv',
         {
@@ -756,21 +754,7 @@ async function submitOrder(event) {
         }
     );
 
-    console.log('تم الإرسال بنجاح:', response);
-
-    alert('تم إرسال الطلب بنجاح');
-
-} catch (error) {
-
-    console.error('خطأ EmailJS:', error);
-
-    alert(
-        'فشل إرسال الطلب:\n' +
-        (error.text  error.message  JSON.stringify(error))
-    );
-
-        }
-
+   
         // Save locally
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         orders.push({
