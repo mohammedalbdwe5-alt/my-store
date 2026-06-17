@@ -14,6 +14,7 @@
                 <button class="drawer-toggle" onclick="openDrawer()">☰</button>
                 <button class="btn cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
                 <button class="btn" onclick="toggleWishlistModal()">❤️ <span id="wishlist-count">0</span></button>
+                <button class="chip" data-cat="Arvea" onclick="filterByCategory('Arvea', this)">🌿 Arvea</button>
             </div>
         </nav>
     </header>
@@ -202,6 +203,10 @@
 
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="added" class="add-popup"><div class="circle">✅</div></div>
+    <!-- بانر Arvea -->
+<section class="arvea-banner container" id="arvea">
+    ...
+</section>
 
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
