@@ -56,7 +56,8 @@ const data = [
     { id:4, name:"ماوس G1",            price:130,  img:"https://picsum.photos/seed/mouse/420/300",  cat:"إكسسوارات", rating:4.5, description:"ماوس ألعاب دقيق وسريع.",                       images:[] },
     { id:5, name:"تاب Tab10",          price:1950, img:"https://picsum.photos/seed/tab/420/300",    cat:"أجهزة",      rating:4.4, description:"جهاز لوحي بشاشة عالية الدقة.",                 images:[] },
     { id:6, name:"لابتوب لايت",        price:5400, img:"https://picsum.photos/seed/laptop/420/300", cat:"أجهزة",      rating:4.7, description:"لابتوب خفيف الوزن وعمر بطارية طويل.",         images:[] },
-    { id:7, name:"كتاب إلكتروني",      price:7500, img:"https://picsum.photos/seed/book/420/300",   cat:"أجهزة",      rating:4.2, description:"قارئ كتب إلكتروني بشاشة حبر إلكتروني.",       images:[] }
+    { id:7, name:"كتاب إلكتروني",      price:7500, img:"https://picsum.photos/seed/book/420/300",   cat:"أجهزة",      rating:4.2, description:"قارئ كتب إلكتروني بشاشة حبر إلكتروني.",       images:[] },
+    { id:8, name:"...", price:..., cat:"Arvea", ... },
 ];
 
 // ===== State =====
@@ -281,6 +282,8 @@ window.addEventListener('scroll', function () {
 
 // ===== updateUILanguage =====
 function updateUILanguage() {
+    $('#drawer-arvea').textContent = 'Arvea';
+    arvea: 'Arvea Nature',
     document.documentElement.lang = state.lang;
     document.documentElement.dir  = state.lang === 'ar' ? 'rtl' : 'ltr';
 
