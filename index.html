@@ -23,17 +23,14 @@
         <p id="hero-text">أفضل المنتجات بتصميم داكن فخم وسرعة عالية وتجربة مثالية.</p>
     </section>
 
-    <!-- شريط الإحصائيات -->
     <div class="container stats-bar" id="stats-bar"></div>
 
-    <!-- فلاتر سريعة -->
     <div class="filters container">
         <div class="chips">
             <button class="chip active" data-cat="all" onclick="filterByCategory('all', this)">الكل</button>
             <button class="chip" data-cat="هواتف" onclick="filterByCategory('هواتف', this)">هواتف</button>
             <button class="chip" data-cat="إكسسوارات" onclick="filterByCategory('إكسسوارات', this)">إكسسوارات</button>
             <button class="chip" data-cat="أجهزة" onclick="filterByCategory('أجهزة', this)">أجهزة</button>
-            <button class="chip" data-cat="Arvea" onclick="filterByCategory('Arvea', this)">Arvea</button>
         </div>
         <div class="search">
             <input id="search" placeholder="ابحث عن منتج…" oninput="debouncedRender()" />
@@ -42,7 +39,6 @@
 
     <section class="products container" id="products"></section>
 
-    <!-- قسم "من نحن" -->
     <section class="about-section" id="about">
         <h2 id="about-heading">من نحن</h2>
         <p id="about-text">متجري الاحترافي هو وجهتك الأولى لأحدث الأجهزة والإكسسوارات بأسعار مناسبة وجودة عالية.</p>
@@ -55,9 +51,9 @@
             <div id="items"></div>
             <p class="total"><b>الإجمالي:</b> <span id="total">0</span></p>
             <div class="cart-actions">
-                <button class="btn danger" onclick="clearCart()" id="clearCartBtn">تفريغ السلة</button>
-                <button class="btn" onclick="showCheckout()" id="checkoutBtn">إتمام الشراء</button>
-                <button class="btn close-btn" onclick="toggleCart()" id="closeCartBtn">إغلاق</button>
+                <button class="btn danger"    onclick="clearCart()"    id="clearCartBtn">تفريغ السلة</button>
+                <button class="btn"           onclick="showCheckout()" id="checkoutBtn">إتمام الشراء</button>
+                <button class="btn close-btn" onclick="toggleCart()"   id="closeCartBtn">إغلاق</button>
             </div>
         </div>
     </div>
@@ -70,28 +66,37 @@
                 <button class="btn icon" onclick="closeCheckout()">✖</button>
             </div>
 
-            <!-- ملخص الطلب -->
-            <div class="order-summary" id="order-summary"></div>
+            <div id="order-summary"></div>
 
             <form id="checkout-form" class="checkout-form" onsubmit="submitOrder(event)">
+
                 <!-- بيانات شخصية -->
                 <div class="form-section">
                     <h4 id="checkout-personal-label">البيانات الشخصية</h4>
-                    <input type="text" id="checkout-name" placeholder="الاسم الكامل *" required />
+                    <input type="text"  id="checkout-name"  placeholder="الاسم الكامل *" required />
                     <div class="form-row">
-                        <input type="tel" id="checkout-phone" placeholder="رقم الهاتف (مثال: +218912345678 أو 0912345678) *" required />
+                        <input type="tel"   id="checkout-phone" placeholder="رقم الهاتف (مثال: +218912345678) *" required />
                         <input type="email" id="checkout-email" placeholder="البريد الإلكتروني (اختياري)" />
                     </div>
                 </div>
 
-                <!-- بيانات التوصيل -->
+                <!-- عنوان التوصيل -->
                 <div class="form-section">
                     <h4 id="checkout-delivery-label">عنوان التوصيل</h4>
+
+                    <!-- الدولة -->
+                    <select id="checkout-country" class="checkout-select" onchange="updateShippingEstimate()" required>
+                        <option value="">اختر الدولة *</option>
+                    </select>
+
                     <input type="text" id="checkout-address" placeholder="العنوان التفصيلي *" required />
                     <div class="form-row">
                         <input type="text" id="checkout-city" placeholder="المدينة *" required />
-                        <input type="text" id="checkout-zip" placeholder="الرمز البريدي (اختياري)" />
+                        <input type="text" id="checkout-zip"  placeholder="الرمز البريدي (اختياري)" />
                     </div>
+
+                    <!-- تقدير شحن أرامكس -->
+                    <div id="shipping-estimate" class="shipping-estimate-box" style="display:none;"></div>
                 </div>
 
                 <!-- طريقة الدفع -->
@@ -107,8 +112,6 @@
                             <span>🏦 تحويل بنكي</span>
                         </label>
                     </div>
-
-                    <!-- معلومات التحويل البنكي -->
                     <div id="bank-info" style="display:none;" class="bank-info-box">
                         <p>اسم صاحب الحساب: <b>محمد عبد السلام محمد صالح</b></p>
                         <p>مصرف الصحاري: <b>2010393957</b></p>
@@ -117,7 +120,7 @@
                             <label for="receipt-image">📎 ارفع صورة الإيصال *</label>
                             <input type="file" id="receipt-image" accept="image/*" />
                         </div>
-                        <div id="upload-progress" style="display:none; color:var(--primary); margin-top:8px;"></div>
+                        <div id="upload-progress" style="display:none;color:var(--primary);margin-top:8px;"></div>
                     </div>
                 </div>
 
@@ -139,20 +142,22 @@
         </div>
     </div>
 
-    <!-- Drawer (شريط جانبي) -->
+    <!-- Drawer -->
     <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
     <div class="drawer" id="drawer">
         <div class="drawer-header">
             <h3 id="drawer-title">الفلاتر</h3>
             <button class="drawer-close" onclick="closeDrawer()">✖</button>
         </div>
+
         <div class="drawer-section">
             <h4>التصنيفات</h4>
-            <button class="chip" onclick="filterByCategory('all', this)" id="drawer-all">الكل</button>
-            <button class="chip" onclick="filterByCategory('هواتف', this)" id="drawer-phones">هواتف</button>
-            <button class="chip" onclick="filterByCategory('إكسسوارات', this)" id="drawer-accessories">إكسسوارات</button>
-            <button class="chip" onclick="filterByCategory('أجهزة', this)" id="drawer-devices">أجهزة</button>
+            <button class="chip" onclick="filterByCategory('all', this)"          id="drawer-all">الكل</button>
+            <button class="chip" onclick="filterByCategory('هواتف', this)"         id="drawer-phones">هواتف</button>
+            <button class="chip" onclick="filterByCategory('إكسسوارات', this)"    id="drawer-accessories">إكسسوارات</button>
+            <button class="chip" onclick="filterByCategory('أجهزة', this)"        id="drawer-devices">أجهزة</button>
         </div>
+
         <div class="drawer-section">
             <h4 id="drawer-sort-label">الترتيب</h4>
             <select id="sort" class="select" onchange="applySort()" style="width:100%">
@@ -163,37 +168,45 @@
                 <option value="rating-desc">التقييم: الأعلى أولاً</option>
             </select>
         </div>
+
         <div class="drawer-section">
             <h4 id="drawer-price-label">السعر</h4>
-            <div style="display:flex; gap:5px;">
+            <div style="display:flex;gap:5px;">
                 <input type="number" id="min-price" placeholder="الحد الأدنى" min="0"
-                    style="width:45%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text);">
+                    style="width:45%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);">
                 <input type="number" id="max-price" placeholder="الحد الأقصى" min="0"
-                    style="width:45%; padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text);">
+                    style="width:45%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);">
             </div>
-            <button class="btn" onclick="applyPriceFilter()" style="width:100%; margin-top:10px;" id="drawer-apply">تطبيق</button>
+            <button class="btn" onclick="applyPriceFilter()" style="width:100%;margin-top:10px;" id="drawer-apply">تطبيق</button>
         </div>
+
+        <!-- العملة -->
+        <div class="drawer-section">
+            <h4 id="drawer-currency-label">العملة</h4>
+            <select id="currency-select" class="select" onchange="setCurrency(this.value)" style="width:100%"></select>
+        </div>
+
         <div class="drawer-section">
             <h4 id="drawer-language-label">اللغة</h4>
             <button class="btn icon" onclick="toggleLanguage()" id="drawer-lang-btn" style="width:100%;">English</button>
         </div>
+
         <div class="drawer-section">
             <h4 id="drawer-theme-label">الوضع</h4>
             <div style="display:flex;gap:8px;">
-                <button class="btn" onclick="toggleTheme('dark')" id="drawer-dark-option" style="flex:1;">داكن</button>
+                <button class="btn" onclick="toggleTheme('dark')"  id="drawer-dark-option"  style="flex:1;">داكن</button>
                 <button class="btn" onclick="toggleTheme('light')" id="drawer-light-option" style="flex:1;">فاتح</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast & Popup -->
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="added" class="add-popup"><div class="circle">✅</div></div>
 
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        emailjs.init('WhzxGr1iJkzsDF3US');
+        emailjs.init('YOUR_PUBLIC_KEY_HERE'); // ← ضع مفتاحك العام هنا
     </script>
 </body>
 </html>
