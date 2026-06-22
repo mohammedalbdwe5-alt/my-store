@@ -14,7 +14,6 @@
                 <button class="drawer-toggle" onclick="openDrawer()">☰</button>
                 <button class="btn cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
                 <button class="btn" onclick="toggleWishlistModal()">❤️ <span id="wishlist-count">0</span></button>
-                <button class="chip" data-cat="Arvea" onclick="filterByCategory('Arvea', this)">🌿 Arvea</button>
             </div>
         </nav>
     </header>
@@ -28,10 +27,11 @@
 
     <div class="filters container">
         <div class="chips">
-            <button class="chip active" data-cat="all" onclick="filterByCategory('all', this)">الكل</button>
-            <button class="chip" data-cat="هواتف" onclick="filterByCategory('هواتف', this)">هواتف</button>
-            <button class="chip" data-cat="إكسسوارات" onclick="filterByCategory('إكسسوارات', this)">إكسسوارات</button>
-            <button class="chip" data-cat="أجهزة" onclick="filterByCategory('أجهزة', this)">أجهزة</button>
+            <button class="chip active" data-cat="all"        onclick="filterByCategory('all', this)">الكل</button>
+            <button class="chip"        data-cat="هواتف"      onclick="filterByCategory('هواتف', this)">هواتف</button>
+            <button class="chip"        data-cat="إكسسوارات" onclick="filterByCategory('إكسسوارات', this)">إكسسوارات</button>
+            <button class="chip"        data-cat="أجهزة"      onclick="filterByCategory('أجهزة', this)">أجهزة</button>
+            <button class="chip arvea-chip" data-cat="Arvea"  onclick="filterByCategory('Arvea', this)">🌿 Arvea</button>
         </div>
         <div class="search">
             <input id="search" placeholder="ابحث عن منتج…" oninput="debouncedRender()" />
@@ -39,6 +39,18 @@
     </div>
 
     <section class="products container" id="products"></section>
+
+    <!-- قسم Arvea الخاص -->
+    <section class="arvea-banner container" id="arvea">
+        <div class="arvea-header">
+            <div class="arvea-logo">🌿 ARVEA NATURE</div>
+            <p class="arvea-tagline" id="arvea-tagline">منتجات طبيعية أصيلة لعناية فائقة بالبشرة والجسم</p>
+        </div>
+        <div class="arvea-products" id="arvea-products"></div>
+        <a class="btn arvea-see-all" href="#" onclick="filterByCategory('Arvea', document.querySelector('[data-cat=Arvea]')); return false;" id="arvea-see-all">
+            عرض كل منتجات Arvea
+        </a>
+    </section>
 
     <section class="about-section" id="about">
         <h2 id="about-heading">من نحن</h2>
@@ -48,9 +60,9 @@
     <!-- Cart Modal -->
     <div class="modal" id="cart" onclick="closeOnBackdrop(event)">
         <div class="modal-content glass" role="dialog" aria-modal="true">
-            <h3>سلة المشتريات</h3>
+            <h3 id="cart-title">سلة المشتريات</h3>
             <div id="items"></div>
-            <p class="total"><b>الإجمالي:</b> <span id="total">0</span></p>
+            <p class="total"><b id="total-label">الإجمالي:</b> <span id="total">0</span></p>
             <div class="cart-actions">
                 <button class="btn danger"    onclick="clearCart()"    id="clearCartBtn">تفريغ السلة</button>
                 <button class="btn"           onclick="showCheckout()" id="checkoutBtn">إتمام الشراء</button>
@@ -66,41 +78,28 @@
                 <h3 id="checkout-title">إتمام الشراء</h3>
                 <button class="btn icon" onclick="closeCheckout()">✖</button>
             </div>
-
             <div id="order-summary"></div>
-
             <form id="checkout-form" class="checkout-form" onsubmit="submitOrder(event)">
-
-                <!-- بيانات شخصية -->
                 <div class="form-section">
                     <h4 id="checkout-personal-label">البيانات الشخصية</h4>
                     <input type="text"  id="checkout-name"  placeholder="الاسم الكامل *" required />
                     <div class="form-row">
-                        <input type="tel"   id="checkout-phone" placeholder="رقم الهاتف (مثال: +218912345678) *" required />
+                        <input type="tel"   id="checkout-phone" placeholder="رقم الهاتف * (مثال: +218912345678)" required />
                         <input type="email" id="checkout-email" placeholder="البريد الإلكتروني (اختياري)" />
                     </div>
                 </div>
-
-                <!-- عنوان التوصيل -->
                 <div class="form-section">
                     <h4 id="checkout-delivery-label">عنوان التوصيل</h4>
-
-                    <!-- الدولة -->
                     <select id="checkout-country" class="checkout-select" onchange="updateShippingEstimate()" required>
                         <option value="">اختر الدولة *</option>
                     </select>
-
                     <input type="text" id="checkout-address" placeholder="العنوان التفصيلي *" required />
                     <div class="form-row">
                         <input type="text" id="checkout-city" placeholder="المدينة *" required />
                         <input type="text" id="checkout-zip"  placeholder="الرمز البريدي (اختياري)" />
                     </div>
-
-                    <!-- تقدير شحن أرامكس -->
                     <div id="shipping-estimate" class="shipping-estimate-box" style="display:none;"></div>
                 </div>
-
-                <!-- طريقة الدفع -->
                 <div class="form-section">
                     <h4 id="checkout-payment-label">طريقة الدفع</h4>
                     <div class="payment-options">
@@ -124,7 +123,6 @@
                         <div id="upload-progress" style="display:none;color:var(--primary);margin-top:8px;"></div>
                     </div>
                 </div>
-
                 <button type="submit" class="btn" id="submit-order-btn" style="width:100%;padding:14px;font-size:16px;">
                     ✅ تأكيد الطلب
                 </button>
@@ -150,15 +148,14 @@
             <h3 id="drawer-title">الفلاتر</h3>
             <button class="drawer-close" onclick="closeDrawer()">✖</button>
         </div>
-
         <div class="drawer-section">
             <h4>التصنيفات</h4>
-            <button class="chip" onclick="filterByCategory('all', this)"          id="drawer-all">الكل</button>
-            <button class="chip" onclick="filterByCategory('هواتف', this)"         id="drawer-phones">هواتف</button>
-            <button class="chip" onclick="filterByCategory('إكسسوارات', this)"    id="drawer-accessories">إكسسوارات</button>
-            <button class="chip" onclick="filterByCategory('أجهزة', this)"        id="drawer-devices">أجهزة</button>
+            <button class="chip" onclick="filterByCategory('all', this)"         id="drawer-all">الكل</button>
+            <button class="chip" onclick="filterByCategory('هواتف', this)"        id="drawer-phones">هواتف</button>
+            <button class="chip" onclick="filterByCategory('إكسسوارات', this)"   id="drawer-accessories">إكسسوارات</button>
+            <button class="chip" onclick="filterByCategory('أجهزة', this)"       id="drawer-devices">أجهزة</button>
+            <button class="chip arvea-chip" onclick="filterByCategory('Arvea', this)" id="drawer-arvea">🌿 Arvea</button>
         </div>
-
         <div class="drawer-section">
             <h4 id="drawer-sort-label">الترتيب</h4>
             <select id="sort" class="select" onchange="applySort()" style="width:100%">
@@ -169,7 +166,6 @@
                 <option value="rating-desc">التقييم: الأعلى أولاً</option>
             </select>
         </div>
-
         <div class="drawer-section">
             <h4 id="drawer-price-label">السعر</h4>
             <div style="display:flex;gap:5px;">
@@ -180,18 +176,14 @@
             </div>
             <button class="btn" onclick="applyPriceFilter()" style="width:100%;margin-top:10px;" id="drawer-apply">تطبيق</button>
         </div>
-
-        <!-- العملة -->
         <div class="drawer-section">
             <h4 id="drawer-currency-label">العملة</h4>
             <select id="currency-select" class="select" onchange="setCurrency(this.value)" style="width:100%"></select>
         </div>
-
         <div class="drawer-section">
             <h4 id="drawer-language-label">اللغة</h4>
             <button class="btn icon" onclick="toggleLanguage()" id="drawer-lang-btn" style="width:100%;">English</button>
         </div>
-
         <div class="drawer-section">
             <h4 id="drawer-theme-label">الوضع</h4>
             <div style="display:flex;gap:8px;">
@@ -204,17 +196,10 @@
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="added" class="add-popup"><div class="circle">✅</div></div>
 
-    <section class="arvea-banner container" id="arvea">
-    <div class="arvea-logo">🌿 ARVEA NATURE</div>
-    <p class="arvea-tagline">منتجات طبيعية أصيلة لعناية فائقة</p>
-    <div class="arvea-products" id="arvea-products">
-        <!-- تُملأ من script.js تلقائياً عند إضافة منتجات بـ cat:"Arvea" -->
-    </div>
-</section>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        emailjs.init('hbxafMz4qw3fL8TLwVDiz'); // ← ضع مفتاحك العام هنا
+        emailjs.init('YOUR_PUBLIC_KEY_HERE');
     </script>
 </body>
 </html>
