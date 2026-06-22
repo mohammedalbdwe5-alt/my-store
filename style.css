@@ -10,6 +10,9 @@
     --border:#2a2f35;
     --danger:#ef4444;
     --success:#22c55e;
+    --arvea:#3d7a52;
+    --arvea-light:#a8e6bc;
+    --arvea-dark:#1a3a2a;
 }
 
 body {
@@ -26,24 +29,33 @@ body[data-theme="light"] {
     --muted:#4d5563; --border:#d1d5db;
     background:#f3f4f6; color:#111827;
 }
-body[data-theme="light"] .btn.icon          { background:#e5e7eb; color:#111; }
-body[data-theme="light"] .chip              { background:#e5e7eb; color:#111; }
-body[data-theme="light"] .search input      { background:#e5e7eb; color:#111; }
-body[data-theme="light"] .select            { background:#e5e7eb; color:#111; border-color:var(--border); }
-body[data-theme="light"] .drawer-toggle     { background:#e5e7eb; color:#111; }
-body[data-theme="light"] .item              { background:#f9fafb; }
-body[data-theme="light"] .qty button        { background:#e5e7eb; color:#111; }
-body[data-theme="light"] .bank-info-box     { background:#eff6ff; border-color:#bfdbfe; }
-body[data-theme="light"] .payment-option    { border-color:#d1d5db; }
+body[data-theme="light"] .btn.icon            { background:#e5e7eb; color:#111; }
+body[data-theme="light"] .chip                { background:#e5e7eb; color:#111; }
+body[data-theme="light"] .search input        { background:#e5e7eb; color:#111; }
+body[data-theme="light"] .select              { background:#e5e7eb; color:#111; border-color:var(--border); }
+body[data-theme="light"] .drawer-toggle       { background:#e5e7eb; color:#111; }
+body[data-theme="light"] .item                { background:#f9fafb; }
+body[data-theme="light"] .qty button          { background:#e5e7eb; color:#111; }
+body[data-theme="light"] .bank-info-box       { background:#eff6ff; border-color:#bfdbfe; }
+body[data-theme="light"] .payment-option      { border-color:#d1d5db; }
 body[data-theme="light"] .payment-option:has(input:checked) { border-color:var(--primary); background:#eff6ff; }
 body[data-theme="light"] .review-input,
 body[data-theme="light"] .review-textarea,
 body[data-theme="light"] .checkout-form input,
 body[data-theme="light"] .checkout-form textarea,
-body[data-theme="light"] .checkout-select   { background:#f9fafb; border-color:#d1d5db; color:#111; }
-body[data-theme="light"] .rating-item       { background:#f9fafb; }
+body[data-theme="light"] .checkout-select     { background:#f9fafb; border-color:#d1d5db; color:#111; }
+body[data-theme="light"] .rating-item         { background:#f9fafb; }
 body[data-theme="light"] .shipping-estimate-box { background:#f0fdf4; border-color:#bbf7d0; }
-body[data-theme="light"] .header            { background:rgba(255,255,255,0.92); }
+body[data-theme="light"] .header              { background:rgba(255,255,255,0.92); }
+body[data-theme="light"] .arvea-banner        { background:linear-gradient(135deg,#e8f5ee 0%,#d4eddb 50%,#e8f5ee 100%); border-color:#a8d5b5; }
+body[data-theme="light"] .arvea-logo          { color:#1a3a2a; }
+body[data-theme="light"] .arvea-tagline       { color:#3d7a52; }
+body[data-theme="light"] .arvea-card          { background:rgba(255,255,255,0.85); border-color:#a8d5b5; }
+body[data-theme="light"] .arvea-card h4       { color:#1a3a2a; }
+body[data-theme="light"] .arvea-card .arvea-price { color:#2d5a3d; }
+body[data-theme="light"] .arvea-chip          { background:#d4eddb; color:#1a3a2a; }
+body[data-theme="light"] .arvea-product-card  { border-color:#a8d5b5; }
+body[data-theme="light"] .arvea-badge         { background:#d4eddb; color:#1a3a2a; }
 
 /* ====== Layout ====== */
 .container { width:90%; max-width:1200px; margin:auto; }
@@ -51,10 +63,9 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
 
 /* ====== Header ====== */
 .header {
-    position:fixed; top:0; padding:12px 0; z-index:1000;
-    width:100%; transition:top 0.3s ease;
-    background:rgba(13,17,23,0.88); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
+    position:fixed; top:0; padding:12px 0; z-index:1000; width:100%;
+    transition:top 0.3s ease; background:rgba(13,17,23,0.88);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
 }
 .header-hidden { top:-80px; }
 .nav    { display:flex; justify-content:space-between; align-items:center; }
@@ -93,7 +104,16 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
     border-radius:20px; padding:8px 14px; cursor:pointer; font-size:14px; transition:0.2s;
 }
 .chip.active { outline:2px solid var(--primary); background:var(--primary); }
-.chip:hover  { opacity:0.8; }
+.chip:hover  { opacity:0.85; }
+
+/* Arvea chip خاص */
+.arvea-chip {
+    background:linear-gradient(135deg,#2d5a3d,#3d7a52);
+    color:#d4f5e2; border:1px solid #4e9966;
+}
+.arvea-chip.active { outline:2px solid var(--arvea-light); background:var(--arvea); }
+.arvea-chip:hover  { opacity:0.85; }
+
 .search input {
     width:240px; max-width:100%; padding:11px 14px;
     border-radius:20px; border:1px solid var(--border);
@@ -106,6 +126,7 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
 .card {
     background:var(--card); padding:16px; border-radius:16px; text-align:center;
     transition:transform 0.25s, box-shadow 0.25s; border:1px solid var(--border);
+    position:relative;
 }
 .card:hover { transform:translateY(-5px); box-shadow:0 0 24px rgba(59,130,246,.3); }
 .card img   { width:100%; border-radius:10px; aspect-ratio:4/3; object-fit:cover; }
@@ -113,6 +134,21 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
 .card .meta { font-size:13px; color:var(--muted); margin-bottom:6px; }
 .card .price { font-weight:800; font-size:18px; margin:6px 0 12px; color:var(--primary); }
 .card-actions { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+
+/* بطاقة Arvea في قائمة المنتجات */
+.arvea-product-card {
+    border-color:#3d7a52;
+    background:linear-gradient(160deg, #161b22 80%, #1a2e1f 100%);
+}
+.arvea-product-card:hover { box-shadow:0 0 24px rgba(61,122,82,.4); }
+
+/* شارة Arvea */
+.arvea-badge {
+    position:absolute; top:10px; right:10px;
+    background:rgba(61,122,82,0.85); color:#d4f5e2;
+    font-size:11px; font-weight:700; padding:3px 8px;
+    border-radius:20px; backdrop-filter:blur(4px);
+}
 
 /* ====== Modal Base ====== */
 .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:2000; overflow-y:auto; padding:20px 0; }
@@ -127,29 +163,27 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
     background:#0f1620; border:1px solid var(--border);
     border-radius:12px; padding:10px 14px; margin:8px 0; gap:10px; flex-wrap:wrap;
 }
-.item-name { font-size:14px; flex:1; min-width:100px; }
-.qty { display:flex; gap:6px; align-items:center; }
+.item-name  { font-size:14px; flex:1; min-width:100px; }
+.qty        { display:flex; gap:6px; align-items:center; }
 .qty button {
     width:28px; height:28px; border-radius:8px; border:none;
     background:#1f2937; color:#fff; cursor:pointer; font-size:16px;
 }
-.qty span  { min-width:20px; text-align:center; }
+.qty span   { min-width:20px; text-align:center; }
 .cart-actions { display:flex; justify-content:space-between; margin-top:14px; gap:8px; flex-wrap:wrap; }
-.total     { margin-top:10px; font-size:16px; }
-.empty-msg { opacity:0.65; text-align:center; padding:20px 0; }
+.total      { margin-top:10px; font-size:16px; }
+.empty-msg  { opacity:0.65; text-align:center; padding:20px 0; }
 
 /* ====== Checkout Modal ====== */
 .checkout-modal-content { max-width:620px; }
 .form-section { margin-bottom:20px; }
 .form-section h4 { margin-bottom:12px; color:var(--primary); font-size:15px; }
-
 .checkout-select {
     width:100%; padding:11px 14px; border-radius:10px;
     border:1px solid var(--border); background:#111827; color:var(--text);
     font-size:14px; margin-bottom:10px; font-family:inherit; cursor:pointer;
 }
 .checkout-select:focus { outline:2px solid var(--primary); }
-
 .checkout-form input,
 .checkout-form textarea {
     padding:11px 14px; border-radius:10px; border:1px solid var(--border);
@@ -158,31 +192,23 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
 }
 .checkout-form input:focus,
 .checkout-form textarea:focus { outline:2px solid var(--primary); }
-.form-row { display:flex; gap:10px; }
+.form-row       { display:flex; gap:10px; }
 .form-row input { flex:1; }
 
 /* ====== Aramex Shipping Estimate ====== */
 .shipping-estimate-box {
-    background:rgba(34,197,94,0.08);
-    border:1px solid rgba(34,197,94,0.35);
-    border-radius:12px; padding:14px; margin:10px 0 14px;
-    font-size:14px;
+    background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.35);
+    border-radius:12px; padding:14px; margin:10px 0 14px; font-size:14px;
 }
 .shipping-header {
     font-weight:700; font-size:15px; color:var(--success);
-    margin-bottom:10px; padding-bottom:8px;
-    border-bottom:1px solid rgba(34,197,94,0.25);
+    margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid rgba(34,197,94,0.25);
 }
-.shipping-row {
-    display:flex; justify-content:space-between;
-    padding:5px 0; font-size:14px;
-}
-.shipping-val   { font-weight:700; color:var(--primary); }
-.shipping-divider {
-    border-top:1px dashed var(--border); margin:8px 0;
-}
-.shipping-grand { font-size:15px; margin-top:4px; color:var(--success); }
-.shipping-note  { font-size:12px; color:var(--muted); margin-top:8px; }
+.shipping-row     { display:flex; justify-content:space-between; padding:5px 0; font-size:14px; }
+.shipping-val     { font-weight:700; color:var(--primary); }
+.shipping-divider { border-top:1px dashed var(--border); margin:8px 0; }
+.shipping-grand   { font-size:15px; margin-top:4px; color:var(--success); }
+.shipping-note    { font-size:12px; color:var(--muted); margin-top:8px; }
 
 /* ====== Payment ====== */
 .payment-options { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
@@ -198,7 +224,7 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
     border-radius:12px; padding:14px; margin-bottom:14px; font-size:14px; line-height:2;
 }
 .file-upload-area { margin-top:10px; }
-.file-upload-area label  { display:block; margin-bottom:6px; font-weight:600; cursor:pointer; color:var(--primary); }
+.file-upload-area label { display:block; margin-bottom:6px; font-weight:600; cursor:pointer; color:var(--primary); }
 .file-upload-area input[type="file"] {
     width:100%; padding:8px; border:1px dashed var(--border);
     border-radius:8px; background:transparent; color:var(--text); cursor:pointer;
@@ -210,8 +236,7 @@ body[data-theme="light"] .header            { background:rgba(255,255,255,0.92);
 .order-summary-box h4 { color:var(--primary); margin-bottom:10px; font-size:15px; }
 .summary-row {
     display:flex; justify-content:space-between;
-    font-size:14px; padding:5px 0;
-    border-bottom:1px solid rgba(255,255,255,0.05);
+    font-size:14px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05);
 }
 .summary-row:last-child { border-bottom:none; }
 .summary-total { margin-top:8px; font-size:15px; }
@@ -261,6 +286,87 @@ img.lazy.loaded { opacity:1; }
 .stat-label { color:var(--muted); font-size:13px; margin-top:2px; }
 .about-btn  { border-radius:20px; padding:9px 20px; font-size:14px; white-space:nowrap; text-decoration:none; }
 
+/* ====== Arvea Banner ====== */
+.arvea-banner {
+    background:linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 60%, #1a3a2a 100%);
+    border:1px solid #3d7a52;
+    border-radius:20px;
+    padding:36px 28px;
+    margin:40px auto;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+/* دوائر زخرفية */
+.arvea-banner::before {
+    content:''; position:absolute; top:-70px; left:-70px;
+    width:220px; height:220px; background:rgba(255,255,255,0.04);
+    border-radius:50%; pointer-events:none;
+}
+.arvea-banner::after {
+    content:''; position:absolute; bottom:-90px; right:-90px;
+    width:260px; height:260px; background:rgba(255,255,255,0.04);
+    border-radius:50%; pointer-events:none;
+}
+
+.arvea-header   { margin-bottom:24px; }
+.arvea-logo {
+    font-size:30px; font-weight:900; color:var(--arvea-light);
+    letter-spacing:4px; margin-bottom:8px;
+}
+.arvea-tagline  { color:#7bc99a; font-size:15px; opacity:0.9; }
+
+/* شبكة منتجات Arvea */
+.arvea-products {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+    gap:16px;
+    margin:20px 0 24px;
+    position:relative; z-index:1;
+}
+
+.arvea-card {
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(168,230,188,0.2);
+    border-radius:14px; padding:16px;
+    transition:transform 0.25s, box-shadow 0.25s;
+    text-align:center;
+}
+.arvea-card:hover {
+    transform:translateY(-4px);
+    box-shadow:0 0 22px rgba(100,200,130,0.3);
+}
+.arvea-card img {
+    width:100%; border-radius:10px;
+    aspect-ratio:1/1; object-fit:cover; margin-bottom:10px;
+}
+.arvea-card h4       { color:#d4f5e2; font-size:14px; margin-bottom:6px; }
+.arvea-card .arvea-price { color:var(--arvea-light); font-weight:800; font-size:16px; margin-bottom:10px; }
+
+/* زر Arvea */
+.btn-arvea {
+    background:var(--arvea); color:#d4f5e2; border:none;
+    border-radius:8px; padding:9px 16px; cursor:pointer;
+    font-size:13px; font-weight:700; transition:background 0.2s;
+    width:100%; font-family:inherit;
+}
+.btn-arvea:hover   { background:#4e9966; }
+.btn-arvea:active  { transform:scale(0.97); }
+
+/* زر "عرض الكل" */
+.arvea-see-all {
+    display:inline-block; margin-top:4px;
+    background:transparent; border:2px solid var(--arvea-light);
+    color:var(--arvea-light); border-radius:20px; padding:10px 28px;
+    font-weight:700; text-decoration:none; font-size:14px;
+    transition:0.2s; position:relative; z-index:1;
+}
+.arvea-see-all:hover { background:var(--arvea-light); color:var(--arvea-dark); }
+
+/* تفاصيل منتج Arvea */
+.arvea-detail { border-top:3px solid var(--arvea); }
+
 /* ====== About Section ====== */
 .about-section {
     background:var(--card); padding:40px 5%; border-radius:0; margin:40px 0;
@@ -284,10 +390,10 @@ img.lazy.loaded { opacity:1; }
 .product-detail-modal .modal-content { max-width:780px; }
 .detail-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:10px; }
 .detail-header h2 { font-size:20px; }
-.detail-body  { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:20px; }
-.detail-image { flex:1; min-width:180px; }
+.detail-body   { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:20px; }
+.detail-image  { flex:1; min-width:180px; }
 .detail-image img { width:100%; border-radius:12px; aspect-ratio:4/3; object-fit:cover; }
-.detail-info  { flex:2; min-width:200px; }
+.detail-info   { flex:2; min-width:200px; }
 .detail-info .price       { font-size:22px; color:var(--primary); font-weight:800; margin:6px 0 10px; }
 .detail-info .meta        { color:var(--muted); font-size:14px; margin-bottom:10px; }
 .detail-info .description { line-height:1.7; font-size:15px; }
@@ -298,9 +404,9 @@ img.lazy.loaded { opacity:1; }
 .ratings-section h3 { margin-bottom:14px; font-size:16px; }
 .rating-item { background:#0f1620; padding:12px; border-radius:10px; margin-bottom:10px; border:1px solid var(--border); }
 .rating-header { display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px; }
-.rating-stars { color:gold; }
-.add-rating   { margin-top:10px; }
-.review-input {
+.rating-stars  { color:gold; }
+.add-rating    { margin-top:10px; }
+.review-input  {
     width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border);
     background:#111827; color:var(--text); margin-bottom:10px; font-size:14px; font-family:inherit;
 }
@@ -324,9 +430,7 @@ img.lazy.loaded { opacity:1; }
     z-index:2001; padding:20px; overflow-y:auto;
 }
 .drawer.open { right:0; }
-.drawer-backdrop {
-    position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; display:none;
-}
+.drawer-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; display:none; }
 .drawer-backdrop.open { display:block; }
 .drawer-header {
     display:flex; justify-content:space-between; align-items:center;
@@ -347,173 +451,57 @@ img.lazy.loaded { opacity:1; }
     .form-row { flex-direction:column; }
     .detail-body { flex-direction:column; }
     .stats-group { gap:24px; }
+    .arvea-products { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; }
 }
 
 /* ====== Responsive — phones ====== */
 @media (max-width:600px) {
-    .logo { font-size:18px; }
+    .logo          { font-size:18px; }
     .btn.cart-btn  { padding:8px 10px; font-size:13px; }
     .drawer-toggle { padding:8px 11px; font-size:16px; }
-    .hero { padding:80px 14px 28px; }
-    .hero h1 { font-size:26px; }
-    .hero p  { font-size:15px; }
-    .stats-group { gap:16px; }
-    .stat-value  { font-size:20px; }
-    .stat-label  { font-size:12px; }
-    .about-btn   { width:100%; text-align:center; }
-    .filters { flex-direction:column; align-items:stretch; }
-    .chips { justify-content:center; }
-    .search { width:100%; }
-    .search input { width:100%; }
-    .products { grid-template-columns:1fr; gap:14px; }
-    .card { padding:12px; }
-    .card h3     { font-size:15px; }
-    .card .meta  { font-size:12px; }
-    .card .price { font-size:17px; }
+    .hero          { padding:80px 14px 28px; }
+    .hero h1       { font-size:26px; }
+    .hero p        { font-size:15px; }
+    .stats-group   { gap:16px; }
+    .stat-value    { font-size:20px; }
+    .stat-label    { font-size:12px; }
+    .about-btn     { width:100%; text-align:center; }
+    .filters       { flex-direction:column; align-items:stretch; }
+    .chips         { justify-content:center; }
+    .search        { width:100%; }
+    .search input  { width:100%; }
+    .products      { grid-template-columns:1fr; gap:14px; }
+    .card          { padding:12px; }
+    .card h3       { font-size:15px; }
+    .card .meta    { font-size:12px; }
+    .card .price   { font-size:17px; }
     .card-actions .btn { padding:8px 10px; font-size:13px; }
-    .cart-actions { flex-direction:column; }
+    .cart-actions  { flex-direction:column; }
     .cart-actions .btn { width:100%; }
-    .item { flex-direction:column; align-items:flex-start; }
-    .payment-options { flex-direction:column; }
+    .item          { flex-direction:column; align-items:flex-start; }
+    .payment-options   { flex-direction:column; }
     .checkout-modal-content { padding:16px; }
     .product-detail-modal .modal-content { padding:14px; }
     .detail-actions { flex-direction:column; }
-    .detail-actions .btn, .detail-actions .wishlist-btn { width:100%; }
-    .drawer { width:82%; right:-82%; }
-    .drawer.open { right:0; }
+    .detail-actions .btn,
+    .detail-actions .wishlist-btn,
+    .detail-actions .btn-arvea { width:100%; }
+    .drawer        { width:82%; right:-82%; }
+    .drawer.open   { right:0; }
     .modal-content { width:95%; margin:16px auto; padding:16px; }
-    .shipping-estimate-box { font-size:13px; }
-    /* ====== Arvea Section ====== */
-.arvea-banner {
-    background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 50%, #1a3a2a 100%);
-    border: 1px solid #3d7a52;
-    border-radius: 20px;
-    padding: 40px 30px;
-    margin: 40px auto;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    .arvea-banner  { padding:24px 14px; border-radius:14px; }
+    .arvea-logo    { font-size:22px; letter-spacing:2px; }
+    .arvea-tagline { font-size:13px; }
+    .arvea-products { grid-template-columns:1fr 1fr; gap:10px; }
+    .arvea-card    { padding:12px; }
+    .arvea-card h4 { font-size:13px; }
+    .arvea-card .arvea-price { font-size:14px; }
 }
-
-/* دائرة زخرفية خلفية */
-.arvea-banner::before {
-    content: '';
-    position: absolute;
-    top: -60px;
-    left: -60px;
-    width: 200px;
-    height: 200px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 50%;
-}
-
-.arvea-banner::after {
-    content: '';
-    position: absolute;
-    bottom: -80px;
-    right: -80px;
-    width: 250px;
-    height: 250px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 50%;
-}
-
-.arvea-logo {
-    font-size: 32px;
-    font-weight: 900;
-    color: #a8e6bc;
-    letter-spacing: 4px;
-    margin-bottom: 8px;
-}
-
-.arvea-tagline {
-    color: #7bc99a;
-    font-size: 15px;
-    margin-bottom: 24px;
-    opacity: 0.9;
-}
-
-.arvea-products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-top: 24px;
-}
-
-.arvea-card {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(168,230,188,0.2);
-    border-radius: 14px;
-    padding: 16px;
-    transition: transform 0.25s, box-shadow 0.25s;
-    text-align: center;
-}
-
-.arvea-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px rgba(100,200,130,0.25);
-}
-
-.arvea-card img {
-    width: 100%;
-    border-radius: 10px;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-.arvea-card h4 {
-    color: #d4f5e2;
-    font-size: 15px;
-    margin-bottom: 6px;
-}
-
-.arvea-card .arvea-price {
-    color: #a8e6bc;
-    font-weight: 800;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.arvea-card .btn-arvea {
-    background: #3d7a52;
-    color: #d4f5e2;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    width: 100%;
-    transition: background 0.2s;
-}
-
-.arvea-card .btn-arvea:hover {
-    background: #4e9966;
-}
-
-/* وضع فاتح */
-body[data-theme="light"] .arvea-banner {
-    background: linear-gradient(135deg, #e8f5ee 0%, #d4eddb 50%, #e8f5ee 100%);
-    border-color: #a8d5b5;
-}
-body[data-theme="light"] .arvea-logo    { color: #2d5a3d; }
-body[data-theme="light"] .arvea-tagline { color: #3d7a52; }
-body[data-theme="light"] .arvea-card   { background: rgba(255,255,255,0.8); border-color: #a8d5b5; }
-body[data-theme="light"] .arvea-card h4      { color: #1a3a2a; }
-body[data-theme="light"] .arvea-card .arvea-price { color: #2d5a3d; }
-
-/* موبايل */
-@media (max-width: 600px) {
-    .arvea-banner { padding: 24px 16px; }
-    .arvea-logo   { font-size: 24px; }
-    .arvea-products { grid-template-columns: 1fr 1fr; gap: 10px; }
-}
-    
 
 @media (max-width:380px) {
-    .hero h1    { font-size:22px; }
-    .hero p     { font-size:14px; }
-    .card .meta { font-size:11px; }
-    .logo       { font-size:16px; }
+    .hero h1       { font-size:22px; }
+    .hero p        { font-size:14px; }
+    .card .meta    { font-size:11px; }
+    .logo          { font-size:16px; }
+    .arvea-products { grid-template-columns:1fr; }
 }
