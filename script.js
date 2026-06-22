@@ -1,70 +1,75 @@
 const $ = (q) => document.querySelector(q);
 const $$ = (q) => document.querySelectorAll(q);
 
-// ===== Currencies (base: LYD) =====
+// ===== Currencies =====
 const currencies = {
-    LYD: { symbol: 'د.ل', rate: 1,      name: 'الدينار الليبي',    nameEn: 'Libyan Dinar',    flag: '🇱🇾' },
-    USD: { symbol: '$',   rate: 0.205,   name: 'الدولار الأمريكي',  nameEn: 'US Dollar',       flag: '🇺🇸' },
-    EUR: { symbol: '€',   rate: 0.188,   name: 'اليورو',             nameEn: 'Euro',            flag: '🇪🇺' },
-    GBP: { symbol: '£',   rate: 0.161,   name: 'الجنيه الإسترليني', nameEn: 'British Pound',   flag: '🇬🇧' },
-    SAR: { symbol: 'ر.س', rate: 0.769,   name: 'الريال السعودي',    nameEn: 'Saudi Riyal',     flag: '🇸🇦' },
-    AED: { symbol: 'د.إ', rate: 0.753,   name: 'الدرهم الإماراتي',  nameEn: 'UAE Dirham',      flag: '🇦🇪' },
-    TRY: { symbol: '₺',   rate: 6.75,    name: 'الليرة التركية',    nameEn: 'Turkish Lira',    flag: '🇹🇷' },
-    EGP: { symbol: 'ج.م', rate: 10.2,    name: 'الجنيه المصري',     nameEn: 'Egyptian Pound',  flag: '🇪🇬' },
+    LYD: { symbol:'د.ل', rate:1,     name:'الدينار الليبي',    nameEn:'Libyan Dinar',    flag:'🇱🇾' },
+    USD: { symbol:'$',   rate:0.205,  name:'الدولار الأمريكي',  nameEn:'US Dollar',       flag:'🇺🇸' },
+    EUR: { symbol:'€',   rate:0.188,  name:'اليورو',             nameEn:'Euro',            flag:'🇪🇺' },
+    GBP: { symbol:'£',   rate:0.161,  name:'الجنيه الإسترليني', nameEn:'British Pound',   flag:'🇬🇧' },
+    SAR: { symbol:'ر.س', rate:0.769,  name:'الريال السعودي',    nameEn:'Saudi Riyal',     flag:'🇸🇦' },
+    AED: { symbol:'د.إ', rate:0.753,  name:'الدرهم الإماراتي',  nameEn:'UAE Dirham',      flag:'🇦🇪' },
+    TRY: { symbol:'₺',   rate:6.75,   name:'الليرة التركية',    nameEn:'Turkish Lira',    flag:'🇹🇷' },
+    EGP: { symbol:'ج.م', rate:10.2,   name:'الجنيه المصري',     nameEn:'Egyptian Pound',  flag:'🇪🇬' },
 };
 
-// ===== Countries & Aramex Estimated Shipping (cost in USD per kg approx) =====
+// ===== Countries & Aramex Shipping (USD) =====
 const countries = [
-    { code:'LY', ar:'ليبيا',             en:'Libya',          cost:0,  days:'1-2'  },
-    { code:'EG', ar:'مصر',               en:'Egypt',          cost:15, days:'3-5'  },
-    { code:'TN', ar:'تونس',              en:'Tunisia',        cost:18, days:'3-5'  },
-    { code:'DZ', ar:'الجزائر',           en:'Algeria',        cost:18, days:'4-6'  },
-    { code:'MA', ar:'المغرب',            en:'Morocco',        cost:20, days:'4-6'  },
-    { code:'SD', ar:'السودان',           en:'Sudan',          cost:18, days:'3-5'  },
-    { code:'SA', ar:'السعودية',          en:'Saudi Arabia',   cost:18, days:'2-4'  },
-    { code:'AE', ar:'الإمارات',          en:'UAE',            cost:18, days:'2-4'  },
-    { code:'QA', ar:'قطر',               en:'Qatar',          cost:18, days:'2-4'  },
-    { code:'KW', ar:'الكويت',            en:'Kuwait',         cost:18, days:'2-4'  },
-    { code:'BH', ar:'البحرين',           en:'Bahrain',        cost:18, days:'2-4'  },
-    { code:'OM', ar:'عُمان',             en:'Oman',           cost:18, days:'2-4'  },
-    { code:'JO', ar:'الأردن',            en:'Jordan',         cost:20, days:'3-5'  },
-    { code:'LB', ar:'لبنان',             en:'Lebanon',        cost:20, days:'3-5'  },
-    { code:'IQ', ar:'العراق',            en:'Iraq',           cost:20, days:'3-5'  },
-    { code:'SY', ar:'سوريا',             en:'Syria',          cost:22, days:'4-6'  },
-    { code:'YE', ar:'اليمن',             en:'Yemen',          cost:22, days:'4-6'  },
-    { code:'TR', ar:'تركيا',             en:'Turkey',         cost:28, days:'4-6'  },
-    { code:'GB', ar:'المملكة المتحدة',   en:'United Kingdom', cost:45, days:'5-8'  },
-    { code:'DE', ar:'ألمانيا',           en:'Germany',        cost:40, days:'5-8'  },
-    { code:'FR', ar:'فرنسا',             en:'France',         cost:40, days:'5-8'  },
-    { code:'IT', ar:'إيطاليا',           en:'Italy',          cost:40, days:'5-8'  },
-    { code:'ES', ar:'إسبانيا',           en:'Spain',          cost:40, days:'5-8'  },
-    { code:'NL', ar:'هولندا',            en:'Netherlands',    cost:40, days:'5-8'  },
-    { code:'SE', ar:'السويد',            en:'Sweden',         cost:42, days:'5-8'  },
-    { code:'US', ar:'الولايات المتحدة',  en:'United States',  cost:55, days:'7-10' },
-    { code:'CA', ar:'كندا',              en:'Canada',         cost:55, days:'7-10' },
-    { code:'AU', ar:'أستراليا',          en:'Australia',      cost:60, days:'8-12' },
-    { code:'CN', ar:'الصين',             en:'China',          cost:35, days:'6-10' },
-    { code:'IN', ar:'الهند',             en:'India',          cost:35, days:'5-8'  },
-    { code:'PK', ar:'باكستان',           en:'Pakistan',       cost:30, days:'5-8'  },
+    { code:'LY', ar:'ليبيا',            en:'Libya',           cost:0,  days:'1-2'  },
+    { code:'EG', ar:'مصر',              en:'Egypt',           cost:15, days:'3-5'  },
+    { code:'TN', ar:'تونس',             en:'Tunisia',         cost:18, days:'3-5'  },
+    { code:'DZ', ar:'الجزائر',          en:'Algeria',         cost:18, days:'4-6'  },
+    { code:'MA', ar:'المغرب',           en:'Morocco',         cost:20, days:'4-6'  },
+    { code:'SD', ar:'السودان',          en:'Sudan',           cost:18, days:'3-5'  },
+    { code:'SA', ar:'السعودية',         en:'Saudi Arabia',    cost:18, days:'2-4'  },
+    { code:'AE', ar:'الإمارات',         en:'UAE',             cost:18, days:'2-4'  },
+    { code:'QA', ar:'قطر',              en:'Qatar',           cost:18, days:'2-4'  },
+    { code:'KW', ar:'الكويت',           en:'Kuwait',          cost:18, days:'2-4'  },
+    { code:'BH', ar:'البحرين',          en:'Bahrain',         cost:18, days:'2-4'  },
+    { code:'OM', ar:'عُمان',            en:'Oman',            cost:18, days:'2-4'  },
+    { code:'JO', ar:'الأردن',           en:'Jordan',          cost:20, days:'3-5'  },
+    { code:'LB', ar:'لبنان',            en:'Lebanon',         cost:20, days:'3-5'  },
+    { code:'IQ', ar:'العراق',           en:'Iraq',            cost:20, days:'3-5'  },
+    { code:'SY', ar:'سوريا',            en:'Syria',           cost:22, days:'4-6'  },
+    { code:'YE', ar:'اليمن',            en:'Yemen',           cost:22, days:'4-6'  },
+    { code:'TR', ar:'تركيا',            en:'Turkey',          cost:28, days:'4-6'  },
+    { code:'GB', ar:'المملكة المتحدة',  en:'United Kingdom',  cost:45, days:'5-8'  },
+    { code:'DE', ar:'ألمانيا',          en:'Germany',         cost:40, days:'5-8'  },
+    { code:'FR', ar:'فرنسا',            en:'France',          cost:40, days:'5-8'  },
+    { code:'IT', ar:'إيطاليا',          en:'Italy',           cost:40, days:'5-8'  },
+    { code:'ES', ar:'إسبانيا',          en:'Spain',           cost:40, days:'5-8'  },
+    { code:'NL', ar:'هولندا',           en:'Netherlands',     cost:40, days:'5-8'  },
+    { code:'SE', ar:'السويد',           en:'Sweden',          cost:42, days:'5-8'  },
+    { code:'US', ar:'الولايات المتحدة', en:'United States',   cost:55, days:'7-10' },
+    { code:'CA', ar:'كندا',             en:'Canada',          cost:55, days:'7-10' },
+    { code:'AU', ar:'أستراليا',         en:'Australia',       cost:60, days:'8-12' },
+    { code:'CN', ar:'الصين',            en:'China',           cost:35, days:'6-10' },
+    { code:'IN', ar:'الهند',            en:'India',           cost:35, days:'5-8'  },
+    { code:'PK', ar:'باكستان',          en:'Pakistan',        cost:30, days:'5-8'  },
 ];
 
 // ===== Product Data =====
 const data = [
-    { id:1, name:"سامسونج A52",        price:2450, img:"https://picsum.photos/seed/phone/420/300",  cat:"هواتف",      rating:4.6, description:"هاتف ممتاز بشاشة كبيرة وأداء قوي.",            images:["https://picsum.photos/seed/phone1/420/300","https://picsum.photos/seed/phone2/420/300"] },
-    { id:2, name:"سماعات سوني برو",    price:820,  img:"https://picsum.photos/seed/ear/420/300",    cat:"إكسسوارات", rating:4.3, description:"سماعات لاسلكية مع عزل ضوضاء.",                 images:["https://picsum.photos/seed/ear1/420/300"] },
-    { id:3, name:"كيبورد ميكانيكي RX", price:170,  img:"https://picsum.photos/seed/keys/420/300",   cat:"إكسسوارات", rating:4.8, description:"لوحة مفاتيح ميكانيكية بإضاءة RGB.",            images:["https://picsum.photos/seed/keys1/420/300"] },
-    { id:4, name:"ماوس G1",            price:130,  img:"https://picsum.photos/seed/mouse/420/300",  cat:"إكسسوارات", rating:4.5, description:"ماوس ألعاب دقيق وسريع.",                       images:[] },
-    { id:5, name:"تاب Tab10",          price:1950, img:"https://picsum.photos/seed/tab/420/300",    cat:"أجهزة",      rating:4.4, description:"جهاز لوحي بشاشة عالية الدقة.",                 images:[] },
-    { id:6, name:"لابتوب لايت",        price:5400, img:"https://picsum.photos/seed/laptop/420/300", cat:"أجهزة",      rating:4.7, description:"لابتوب خفيف الوزن وعمر بطارية طويل.",         images:[] },
-    { id:7, name:"كتاب إلكتروني",      price:7500, img:"https://picsum.photos/seed/book/420/300",   cat:"أجهزة",      rating:4.2, description:"قارئ كتب إلكتروني بشاشة حبر إلكتروني.",       images:[] },
-    { id:8, name:"...", price:..., cat:"Arvea", ... },
+    { id:1,  name:'سامسونج A52',           price:2450,  img:'https://picsum.photos/seed/phone/420/300',   cat:'هواتف',      rating:4.6, description:'هاتف ممتاز بشاشة كبيرة وأداء قوي.',            images:[] },
+    { id:2,  name:'سماعات سوني برو',       price:820,   img:'https://picsum.photos/seed/ear/420/300',     cat:'إكسسوارات', rating:4.3, description:'سماعات لاسلكية مع عزل ضوضاء.',                 images:[] },
+    { id:3,  name:'كيبورد ميكانيكي RX',    price:170,   img:'https://picsum.photos/seed/keys/420/300',    cat:'إكسسوارات', rating:4.8, description:'لوحة مفاتيح ميكانيكية بإضاءة RGB.',            images:[] },
+    { id:4,  name:'ماوس G1',               price:130,   img:'https://picsum.photos/seed/mouse/420/300',   cat:'إكسسوارات', rating:4.5, description:'ماوس ألعاب دقيق وسريع.',                       images:[] },
+    { id:5,  name:'تاب Tab10',             price:1950,  img:'https://picsum.photos/seed/tab/420/300',     cat:'أجهزة',      rating:4.4, description:'جهاز لوحي بشاشة عالية الدقة.',                 images:[] },
+    { id:6,  name:'لابتوب لايت',           price:5400,  img:'https://picsum.photos/seed/laptop/420/300',  cat:'أجهزة',      rating:4.7, description:'لابتوب خفيف الوزن وعمر بطارية طويل.',         images:[] },
+    { id:7,  name:'كتاب إلكتروني',         price:7500,  img:'https://picsum.photos/seed/book/420/300',    cat:'أجهزة',      rating:4.2, description:'قارئ كتب إلكتروني بشاشة حبر إلكتروني.',       images:[] },
+    // ===== Arvea Products =====
+    { id:8,  name:'كريم Arvea الطبيعي',    price:85,    img:'https://picsum.photos/seed/arvea1/420/420',  cat:'Arvea',      rating:4.9, description:'كريم مرطب طبيعي 100% مستخلص من نباتات البحر المتوسط.', images:[] },
+    { id:9,  name:'زيت أرغان Arvea',       price:120,   img:'https://picsum.photos/seed/arvea2/420/420',  cat:'Arvea',      rating:4.8, description:'زيت الأرغان النقي للعناية بالشعر والبشرة.',    images:[] },
+    { id:10, name:'صابون Arvea العضوي',    price:45,    img:'https://picsum.photos/seed/arvea3/420/420',  cat:'Arvea',      rating:4.7, description:'صابون عضوي بالأعشاب الطبيعية.',               images:[] },
+    { id:11, name:'سيروم Arvea للبشرة',    price:195,   img:'https://picsum.photos/seed/arvea4/420/420',  cat:'Arvea',      rating:4.9, description:'سيروم مركز لتفتيح وترطيب البشرة.',             images:[] },
+    { id:12, name:'ماسك Arvea الطيني',     price:75,    img:'https://picsum.photos/seed/arvea5/420/420',  cat:'Arvea',      rating:4.6, description:'ماسك طيني لتنقية المسام وتوحيد البشرة.',       images:[] },
 ];
 
 // ===== State =====
 let state = {
-    q: '', cat: 'all', sort: 'default',
-    minPrice: 0, maxPrice: Infinity,
-    lang: 'ar',
+    q:'', cat:'all', sort:'default',
+    minPrice:0, maxPrice:Infinity,
+    lang:'ar',
     currency: localStorage.getItem('currency') || 'LYD'
 };
 
@@ -76,7 +81,7 @@ let reviews  = loadReviews();
 const translations = {
     ar: {
         appName:'متجري الاحترافي', searchPlaceholder:'ابحث عن منتج…',
-        all:'الكل', phones:'هواتف', accessories:'إكسسوارات', devices:'أجهزة',
+        all:'الكل', phones:'هواتف', accessories:'إكسسوارات', devices:'أجهزة', arvea:'🌿 Arvea',
         sort:'الترتيب', priceAsc:'السعر: من الأرخص للأغلى', priceDesc:'السعر: من الأغلى للأرخص',
         nameAsc:'الاسم: أ → ي', ratingDesc:'التقييم: الأعلى أولاً',
         cart:'سلة المشتريات', total:'الإجمالي', emptyCart:'السلة فارغة',
@@ -103,22 +108,18 @@ const translations = {
         reviewRequired:'الرجاء إدخال تعليق وتقييم بالنجوم',
         noReviews:'لا توجد تقييمات بعد',
         aboutUsBtn:'من نحن',
-        currency:'العملة',
-        country:'الدولة',
-        selectCountry:'اختر الدولة *',
+        currency:'العملة', country:'الدولة', selectCountry:'اختر الدولة *',
         shippingViaAramex:'📦 الشحن عبر أرامكس',
         freeShipping:'🎉 شحن مجاني داخل ليبيا',
-        shippingCost:'تكلفة الشحن',
-        estimatedDelivery:'مدة التوصيل المتوقعة',
-        days:'أيام عمل',
+        shippingCost:'تكلفة الشحن', estimatedDelivery:'مدة التوصيل المتوقعة', days:'أيام عمل',
         shippingNote:'* الأسعار تقديرية وتُحدد عند تأكيد الشحن مع أرامكس',
-        productsTotal:'إجمالي المنتجات',
-        shippingTotal:'تكلفة الشحن',
-        grandTotal:'الإجمالي الكلي',
+        productsTotal:'إجمالي المنتجات', grandTotal:'الإجمالي الكلي',
+        arveaSeeAll:'عرض كل منتجات Arvea',
+        arvеaTagline:'منتجات طبيعية أصيلة لعناية فائقة بالبشرة والجسم',
     },
     en: {
         appName:'My Professional Store', searchPlaceholder:'Search products…',
-        all:'All', phones:'Phones', accessories:'Accessories', devices:'Devices',
+        all:'All', phones:'Phones', accessories:'Accessories', devices:'Devices', arvea:'🌿 Arvea',
         sort:'Sort', priceAsc:'Price: Low to High', priceDesc:'Price: High to Low',
         nameAsc:'Name: A → Z', ratingDesc:'Rating: Highest First',
         cart:'Shopping Cart', total:'Total', emptyCart:'Cart is empty',
@@ -145,18 +146,14 @@ const translations = {
         reviewRequired:'Please enter a comment and select star rating',
         noReviews:'No reviews yet',
         aboutUsBtn:'About Us',
-        currency:'Currency',
-        country:'Country',
-        selectCountry:'Select Country *',
+        currency:'Currency', country:'Country', selectCountry:'Select Country *',
         shippingViaAramex:'📦 Shipping via Aramex',
         freeShipping:'🎉 Free shipping within Libya',
-        shippingCost:'Shipping Cost',
-        estimatedDelivery:'Estimated Delivery',
-        days:'business days',
+        shippingCost:'Shipping Cost', estimatedDelivery:'Estimated Delivery', days:'business days',
         shippingNote:'* Prices are estimates, confirmed at shipment with Aramex',
-        productsTotal:'Products Total',
-        shippingTotal:'Shipping Cost',
-        grandTotal:'Grand Total',
+        productsTotal:'Products Total', grandTotal:'Grand Total',
+        arveaSeeAll:'View all Arvea products',
+        arvеaTagline:'Authentic natural products for superior skin and body care',
     }
 };
 
@@ -164,14 +161,13 @@ function getTranslation(key) {
     return (translations[state.lang] && translations[state.lang][key]) ? translations[state.lang][key] : key;
 }
 
-// ===== Dynamic Price Formatting =====
+// ===== Price Formatting =====
 function formatPrice(lydAmount) {
     const curr = currencies[state.currency];
     const converted = lydAmount * curr.rate;
     try {
         return new Intl.NumberFormat(state.lang === 'ar' ? 'ar' : 'en', {
-            style: 'currency',
-            currency: state.currency,
+            style:'currency', currency:state.currency,
             minimumFractionDigits: state.currency === 'LYD' ? 0 : 2,
             maximumFractionDigits: state.currency === 'LYD' ? 0 : 2
         }).format(converted);
@@ -180,40 +176,36 @@ function formatPrice(lydAmount) {
     }
 }
 
-// Shipping cost stored in USD → convert to selected currency
 function formatShipping(usdCost) {
     if (usdCost === 0) return getTranslation('freeShipping');
-    const lydCost = usdCost / currencies['USD'].rate;
-    return formatPrice(lydCost);
+    return formatPrice(usdCost / currencies['USD'].rate);
 }
 
-// ===== Live Exchange Rates (free API, no key required) =====
+// ===== Live Exchange Rates =====
 async function fetchLiveRates() {
     try {
         const res = await fetch('https://open.er-api.com/v6/latest/LYD');
-        if (!res.ok) throw new Error('rate fetch failed');
+        if (!res.ok) throw new Error('failed');
         const json = await res.json();
         if (json.rates) {
             Object.keys(currencies).forEach(code => {
                 if (code !== 'LYD' && json.rates[code]) currencies[code].rate = json.rates[code];
             });
         }
-    } catch(e) {
-        console.log('Using fallback exchange rates');
-    }
+    } catch(e) { console.log('Using fallback exchange rates'); }
 }
 
-// ===== Set Currency =====
+// ===== Currency =====
 function setCurrency(code) {
     if (!currencies[code]) return;
     state.currency = code;
     localStorage.setItem('currency', code);
     render();
+    renderArvea();
     updateCartUI();
     updateShippingEstimate();
 }
 
-// ===== Populate selects =====
 function populateCurrencySelect() {
     const sel = $('#currency-select');
     if (!sel) return;
@@ -239,14 +231,12 @@ function updateShippingEstimate() {
     const sel = $('#checkout-country');
     const box = $('#shipping-estimate');
     if (!sel || !box) return;
-    const code = sel.value;
-    if (!code) { box.style.display = 'none'; return; }
-    const country = countries.find(c => c.code === code);
+    const country = countries.find(c => c.code === sel.value);
     if (!country) { box.style.display = 'none'; return; }
 
-    const shippingLyd   = country.cost === 0 ? 0 : country.cost / currencies['USD'].rate;
-    const productsLyd   = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const grandLyd      = productsLyd + shippingLyd;
+    const shippingLyd  = country.cost === 0 ? 0 : country.cost / currencies['USD'].rate;
+    const productsLyd  = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const grandLyd     = productsLyd + shippingLyd;
 
     box.style.display = 'block';
     box.innerHTML = `
@@ -271,19 +261,39 @@ function updateShippingEstimate() {
         <div class="shipping-note">${getTranslation('shippingNote')}</div>`;
 }
 
+// ===== Render Arvea Banner =====
+function renderArvea() {
+    const container = $('#arvea-products');
+    if (!container) return;
+    const arvеaItems = data.filter(p => p.cat === 'Arvea').slice(0, 4);
+    container.innerHTML = arvеaItems.map(p => `
+        <div class="arvea-card">
+            <img src="${p.img}" alt="${p.name}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+            <h4>${p.name}</h4>
+            <div class="arvea-price">${formatPrice(p.price)}</div>
+            <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn-arvea" onclick="add(${p.id})">${getTranslation('addToCart')}</button>
+                <button class="btn icon" style="padding:6px 10px;font-size:14px;" onclick="showProductDetail(${p.id})">🔍</button>
+            </div>
+        </div>`).join('');
+
+    const seeAll = $('#arvea-see-all');
+    if (seeAll) seeAll.textContent = getTranslation('arveaSeeAll');
+    const tagline = $('#arvea-tagline');
+    if (tagline) tagline.textContent = getTranslation('arvеaTagline');
+}
+
 // ===== Header scroll =====
 let lastScrollTop = 0;
 const header = $('.header');
 window.addEventListener('scroll', function () {
-    let st = window.pageYOffset || document.documentElement.scrollTop;
+    const st = window.pageYOffset || document.documentElement.scrollTop;
     header.classList.toggle('header-hidden', st > lastScrollTop && st > 60);
     lastScrollTop = st <= 0 ? 0 : st;
 }, false);
 
 // ===== updateUILanguage =====
 function updateUILanguage() {
-    $('#drawer-arvea').textContent = 'Arvea';
-    arvea: 'Arvea Nature',
     document.documentElement.lang = state.lang;
     document.documentElement.dir  = state.lang === 'ar' ? 'rtl' : 'ltr';
 
@@ -299,6 +309,7 @@ function updateUILanguage() {
         mc.querySelectorAll('.chip[data-cat="هواتف"]').forEach(el => el.textContent = getTranslation('phones'));
         mc.querySelectorAll('.chip[data-cat="إكسسوارات"]').forEach(el => el.textContent = getTranslation('accessories'));
         mc.querySelectorAll('.chip[data-cat="أجهزة"]').forEach(el => el.textContent = getTranslation('devices'));
+        mc.querySelectorAll('.chip[data-cat="Arvea"]').forEach(el => el.textContent = getTranslation('arvea'));
     }
 
     const ss = $('#sort');
@@ -311,45 +322,44 @@ function updateUILanguage() {
     }
 
     const q = (id, key) => { const el = $(id); if (el) el.textContent = getTranslation(key); };
-    q('#cart h3',              'cart');
-    q('#clearCartBtn',         'clearCart');
-    q('#closeCartBtn',         'close');
-    q('#checkoutBtn',          'checkout');
-    q('#checkout-title',       'checkout');
+    q('#cart-title',             'cart');
+    q('#clearCartBtn',           'clearCart');
+    q('#closeCartBtn',           'close');
+    q('#checkoutBtn',            'checkout');
+    q('#checkout-title',         'checkout');
     q('#checkout-personal-label','personalInfo');
     q('#checkout-delivery-label','deliveryAddress');
     q('#checkout-payment-label', 'paymentMethod');
-    q('#wishlist-title',       'wishlist');
-    q('#about-heading',        'aboutUs');
-    q('#about-text',           'aboutText');
-    q('#drawer-title',         'filters');
-    q('#drawer-language-label','language');
-    q('#drawer-currency-label','currency');
-    q('#drawer-theme-label',   'theme');
-    q('#drawer-dark-option',   'dark');
-    q('#drawer-light-option',  'light');
-    q('#drawer-all',           'all');
-    q('#drawer-phones',        'phones');
-    q('#drawer-accessories',   'accessories');
-    q('#drawer-devices',       'devices');
-    q('#drawer-sort-label',    'sort');
-    q('#drawer-apply',         'apply');
+    q('#wishlist-title',         'wishlist');
+    q('#about-heading',          'aboutUs');
+    q('#about-text',             'aboutText');
+    q('#drawer-title',           'filters');
+    q('#drawer-language-label',  'language');
+    q('#drawer-currency-label',  'currency');
+    q('#drawer-theme-label',     'theme');
+    q('#drawer-dark-option',     'dark');
+    q('#drawer-light-option',    'light');
+    q('#drawer-all',             'all');
+    q('#drawer-phones',          'phones');
+    q('#drawer-accessories',     'accessories');
+    q('#drawer-devices',         'devices');
+    q('#drawer-arvea',           'arvea');
+    q('#drawer-apply',           'apply');
 
     const pl = $('#drawer-price-label');
     if (pl) pl.textContent = getTranslation('min') + ' / ' + getTranslation('max');
-
     const lb = $('#drawer-lang-btn');
     if (lb) lb.textContent = state.lang === 'ar' ? 'English' : 'العربية';
-
     const sb = $('#submit-order-btn');
     if (sb && !sb.disabled) sb.textContent = '✅ ' + getTranslation('confirmOrder');
 
     populateCurrencySelect();
     populateCountrySelect();
+    renderArvea();
     render();
 }
 
-// ===== Render =====
+// ===== Render Products =====
 function render() {
     const filtered = data
         .filter(p => state.cat === 'all' || p.cat === state.cat)
@@ -366,8 +376,9 @@ function render() {
         });
 
     $('#products').innerHTML = filtered.map(p => `
-        <div class="card" data-id="${p.id}">
+        <div class="card${p.cat === 'Arvea' ? ' arvea-product-card' : ''}" data-id="${p.id}">
             <img src="${p.img}" alt="${p.name}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+            ${p.cat === 'Arvea' ? '<span class="arvea-badge">🌿 Arvea</span>' : ''}
             <h3>${p.name}</h3>
             <div class="meta">${getTranslation('category')}: ${p.cat} &bull; ${getTranslation('rating')}: ${p.rating}★</div>
             <div class="price">${formatPrice(p.price)}</div>
@@ -382,7 +393,6 @@ function render() {
 }
 render();
 
-// ===== Debounce / Sort / Filter =====
 let timer;
 function debouncedRender() {
     clearTimeout(timer);
@@ -404,8 +414,7 @@ function applyPriceFilter() {
 // ===== Toast =====
 function toast(msg) {
     const el = $('#toast');
-    el.textContent = msg;
-    el.classList.add('show');
+    el.textContent = msg; el.classList.add('show');
     setTimeout(() => el.classList.remove('show'), 2500);
 }
 
@@ -414,7 +423,7 @@ function add(id) {
     const p = data.find(x => x.id === id);
     const e = cart.find(i => i.id === id);
     if (e) e.qty += 1;
-    else cart.push({ id:p.id, name:p.name, price:p.price, qty:1 });
+    else cart.push({ id:p.id, name:p.name, price:p.price, qty:1, cat:p.cat });
     persistCart(); updateCartUI();
     toast(getTranslation('addToCart') + ' ✓');
     showAddPopup();
@@ -443,7 +452,7 @@ function updateCartUI() {
     $('#items').innerHTML = cart.length
         ? cart.map(i => `
             <div class="item">
-                <div class="item-name">${i.name}</div>
+                <div class="item-name">${i.name}${i.cat === 'Arvea' ? ' 🌿' : ''}</div>
                 <div class="qty">
                     <button onclick="changeQty(${i.id},-1)">−</button>
                     <span>${i.qty}</span>
@@ -461,19 +470,13 @@ function loadCart()    { try { return JSON.parse(localStorage.getItem('cart')) |
 // ===== Wishlist =====
 function loadWishlist()    { try { return JSON.parse(localStorage.getItem('wishlist')) || []; } catch(e) { return []; } }
 function persistWishlist() { localStorage.setItem('wishlist', JSON.stringify(wishlist)); }
-
-function updateWishlistUI() {
-    const el = $('#wishlist-count');
-    if (el) el.textContent = wishlist.length;
-}
-
+function updateWishlistUI() { const el = $('#wishlist-count'); if (el) el.textContent = wishlist.length; }
 function toggleWishlist(id) {
     const idx = wishlist.indexOf(id);
     if (idx === -1) { wishlist.push(id); toast(getTranslation('addToWishlist') + ' ✓'); }
     else { wishlist.splice(idx, 1); toast(getTranslation('removeFromWishlist') + ' ✓'); }
     persistWishlist(); updateWishlistUI(); render();
 }
-
 function toggleWishlistModal() {
     const modal = $('#wishlist-modal');
     if (modal.style.display === 'block') { modal.style.display = 'none'; return; }
@@ -481,7 +484,7 @@ function toggleWishlistModal() {
     $('#wishlist-items').innerHTML = items.length
         ? items.map(p => `
             <div class="item">
-                <div class="item-name">${p.name} — ${formatPrice(p.price)}</div>
+                <div class="item-name">${p.name}${p.cat === 'Arvea' ? ' 🌿' : ''} — ${formatPrice(p.price)}</div>
                 <div class="qty">
                     <button class="btn" style="padding:5px 10px;font-size:13px" onclick="add(${p.id})">${getTranslation('addToCart')}</button>
                     <button class="btn danger" style="padding:5px 10px;font-size:13px" onclick="toggleWishlist(${p.id});toggleWishlistModal();toggleWishlistModal();">${getTranslation('remove')}</button>
@@ -490,21 +493,18 @@ function toggleWishlistModal() {
         : `<p class="empty-msg">${getTranslation('emptyWishlist')}</p>`;
     modal.style.display = 'block';
 }
-
 function closeWishlistBackdrop(e) { if (e.target.id === 'wishlist-modal') toggleWishlistModal(); }
 
 // ===== Reviews =====
 function loadReviews()    { try { return JSON.parse(localStorage.getItem('reviews')) || {}; } catch(e) { return {}; } }
 function persistReviews() { localStorage.setItem('reviews', JSON.stringify(reviews)); }
-
 function addReview(productId, userName, rating, comment) {
     if (!reviews[productId]) reviews[productId] = [];
     reviews[productId].push({ user:userName, rating, comment,
         date: new Date().toLocaleDateString(state.lang === 'ar' ? 'ar-LY' : 'en-US') });
     persistReviews();
     const product = data.find(p => p.id === productId);
-    if (product && reviews[productId].length > 0)
-        product.rating = Math.round(reviews[productId].reduce((s, r) => s + r.rating, 0) / reviews[productId].length * 10) / 10;
+    if (product) product.rating = Math.round(reviews[productId].reduce((s,r) => s+r.rating, 0) / reviews[productId].length * 10) / 10;
     if ($('#product-detail') && $('#product-detail').style.display === 'block') showProductDetail(productId);
     render();
 }
@@ -513,22 +513,16 @@ function addReview(productId, userName, rating, comment) {
 function openDrawer()  { $('#drawer').classList.add('open'); $('#drawer-backdrop').classList.add('open'); }
 function closeDrawer() { $('#drawer').classList.remove('open'); $('#drawer-backdrop').classList.remove('open'); }
 
-// ===== Language / Currency / Theme =====
+// ===== Language / Theme =====
 function toggleLanguage() { state.lang = state.lang === 'ar' ? 'en' : 'ar'; updateUILanguage(); }
-
-(function restoreTheme() {
-    document.body.dataset.theme = localStorage.getItem('theme') === 'light' ? 'light' : '';
-})();
+(function restoreTheme() { document.body.dataset.theme = localStorage.getItem('theme') === 'light' ? 'light' : ''; })();
 function toggleTheme(theme) { document.body.dataset.theme = theme === 'light' ? 'light' : ''; localStorage.setItem('theme', theme); }
 
 // ===== Cart Modal =====
-function toggleCart() {
-    const c = $('#cart');
-    c.style.display = c.style.display === 'block' ? 'none' : 'block';
-}
+function toggleCart() { const c = $('#cart'); c.style.display = c.style.display === 'block' ? 'none' : 'block'; }
 function closeOnBackdrop(e) { if (e.target.id === 'cart') toggleCart(); }
 
-// ===== Checkout Modal =====
+// ===== Checkout =====
 function showCheckout() {
     if (cart.length === 0) { toast(getTranslation('emptyCart')); return; }
     const productsLyd = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -537,7 +531,7 @@ function showCheckout() {
             <h4>${getTranslation('orderSummary')}</h4>
             ${cart.map(i => `
                 <div class="summary-row">
-                    <span>${i.name} × ${i.qty}</span>
+                    <span>${i.name}${i.cat === 'Arvea' ? ' 🌿' : ''} × ${i.qty}</span>
                     <span>${formatPrice(i.price * i.qty)}</span>
                 </div>`).join('')}
             <div class="summary-row summary-total">
@@ -545,30 +539,24 @@ function showCheckout() {
                 <span><b>${formatPrice(productsLyd)}</b></span>
             </div>
         </div>`;
-
     const form = $('#checkout-form');
     if (form) form.reset();
     toggleReceiptField();
     populateCountrySelect();
-    const box = $('#shipping-estimate');
-    if (box) box.style.display = 'none';
-    const sb = $('#submit-order-btn');
-    if (sb) sb.textContent = '✅ ' + getTranslation('confirmOrder');
-
+    const box = $('#shipping-estimate'); if (box) box.style.display = 'none';
+    const sb = $('#submit-order-btn'); if (sb) sb.textContent = '✅ ' + getTranslation('confirmOrder');
     $('#cart').style.display = 'none';
     $('#checkout-modal').style.display = 'block';
 }
-
-function closeCheckout()             { $('#checkout-modal').style.display = 'none'; }
-function closeCheckoutBackdrop(e)    { if (e.target.id === 'checkout-modal') closeCheckout(); }
-
+function closeCheckout()          { $('#checkout-modal').style.display = 'none'; }
+function closeCheckoutBackdrop(e) { if (e.target.id === 'checkout-modal') closeCheckout(); }
 function toggleReceiptField() {
-    const method  = document.querySelector('input[name="payment-method"]:checked');
-    const bankInfo = $('#bank-info');
-    if (bankInfo) bankInfo.style.display = (method && method.value === 'transfer') ? 'block' : 'none';
+    const method = document.querySelector('input[name="payment-method"]:checked');
+    const bi = $('#bank-info');
+    if (bi) bi.style.display = (method && method.value === 'transfer') ? 'block' : 'none';
 }
 
-// ===== Keyboard shortcuts =====
+// ===== Keyboard =====
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
         $('#cart').style.display = 'none';
@@ -580,8 +568,7 @@ document.addEventListener('keydown', e => {
 
 // ===== Stats =====
 function updateStats(filtered) {
-    const sb = $('#stats-bar');
-    if (!sb) return;
+    const sb = $('#stats-bar'); if (!sb) return;
     sb.innerHTML = `
         <div class="stats-group">
             <div class="stat-item"><div class="stat-value">${filtered.length}</div><div class="stat-label">${getTranslation('statsProducts')}</div></div>
@@ -593,8 +580,8 @@ function updateStats(filtered) {
 
 // ===== Product Detail =====
 function showProductDetail(id) {
-    const product = data.find(p => p.id === id);
-    if (!product) return;
+    const product = data.find(p => p.id === id); if (!product) return;
+    const isArvea = product.cat === 'Arvea';
     const productReviews = reviews[product.id] || [];
     const reviewsHtml = productReviews.map(r => `
         <div class="rating-item">
@@ -604,9 +591,9 @@ function showProductDetail(id) {
         </div>`).join('');
 
     const modalContent = `
-        <div class="modal-content glass product-detail">
+        <div class="modal-content glass product-detail${isArvea ? ' arvea-detail' : ''}">
             <div class="detail-header">
-                <h2>${product.name}</h2>
+                <h2>${isArvea ? '🌿 ' : ''}${product.name}</h2>
                 <button class="btn icon" onclick="closeProductDetail()">✖</button>
             </div>
             <div class="detail-body">
@@ -616,7 +603,7 @@ function showProductDetail(id) {
                     <p class="meta">${getTranslation('category')}: ${product.cat} &bull; ${getTranslation('rating')}: ${product.rating}★</p>
                     <p class="description">${product.description || ''}</p>
                     <div class="detail-actions">
-                        <button class="btn" onclick="add(${product.id}); closeProductDetail();">${getTranslation('addToCart')}</button>
+                        <button class="${isArvea ? 'btn-arvea' : 'btn'}" onclick="add(${product.id}); closeProductDetail();">${getTranslation('addToCart')}</button>
                         <button class="wishlist-btn ${wishlist.includes(product.id) ? 'active' : ''}" onclick="toggleWishlist(${product.id})">❤️ ${getTranslation('addToWishlist')}</button>
                     </div>
                 </div>
@@ -627,7 +614,7 @@ function showProductDetail(id) {
                     <input type="text" id="review-name" placeholder="${getTranslation('yourName')}" class="review-input">
                     <div class="star-rating" id="star-rating">${[1,2,3,4,5].map(i=>`<span data-rating="${i}">★</span>`).join('')}</div>
                     <textarea id="review-comment" placeholder="${getTranslation('yourComment')}" rows="3" class="review-textarea"></textarea>
-                    <button class="btn" onclick="submitReview(${product.id})">${getTranslation('submitReview')}</button>
+                    <button class="${isArvea ? 'btn-arvea' : 'btn'}" onclick="submitReview(${product.id})">${getTranslation('submitReview')}</button>
                 </div>
                 <h3 style="margin-top:20px;">${getTranslation('rating')}</h3>
                 ${reviewsHtml || `<p class="empty-msg">${getTranslation('noReviews')}</p>`}
@@ -679,7 +666,6 @@ window.closeProductDetail = closeProductDetail;
 // ===== Submit Order =====
 async function submitOrder(event) {
     event.preventDefault();
-
     const name        = $('#checkout-name').value.trim();
     const phone       = $('#checkout-phone').value.trim();
     const email       = $('#checkout-email').value.trim();
@@ -689,9 +675,7 @@ async function submitOrder(event) {
     const countryCode = $('#checkout-country').value;
     const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
 
-    if (!name || !phone || !address || !city || !countryCode) {
-        toast(getTranslation('fillRequired')); return;
-    }
+    if (!name || !phone || !address || !city || !countryCode) { toast(getTranslation('fillRequired')); return; }
 
     const phoneClean = phone.replace(/[\s\-]/g, '');
     if (!/^(\+\d{1,4}|09|07|05)\d{7,13}$/.test(phoneClean) || phoneClean.replace(/\D/g,'').length < 10) {
@@ -699,8 +683,7 @@ async function submitOrder(event) {
     }
 
     const submitBtn = $('#submit-order-btn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = getTranslation('processing');
+    submitBtn.disabled = true; submitBtn.textContent = getTranslation('processing');
 
     try {
         let receiptURL = '';
@@ -708,60 +691,50 @@ async function submitOrder(event) {
             const fi = $('#receipt-image');
             if (!fi.files || fi.files.length === 0) {
                 toast(getTranslation('uploadReceipt'));
-                submitBtn.disabled = false; submitBtn.textContent = '✅ ' + getTranslation('confirmOrder');
-                return;
+                submitBtn.disabled = false; submitBtn.textContent = '✅ ' + getTranslation('confirmOrder'); return;
             }
             if (fi.files[0].size > 5 * 1024 * 1024) {
                 toast(getTranslation('fileTooLarge'));
-                submitBtn.disabled = false; submitBtn.textContent = '✅ ' + getTranslation('confirmOrder');
-                return;
+                submitBtn.disabled = false; submitBtn.textContent = '✅ ' + getTranslation('confirmOrder'); return;
             }
             receiptURL = await new Promise((res, rej) => {
-                const r = new FileReader();
-                r.onload = () => res(r.result); r.onerror = rej;
-                r.readAsDataURL(fi.files[0]);
+                const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(fi.files[0]);
             });
         }
 
-        const countryObj   = countries.find(c => c.code === countryCode) || { ar:countryCode, en:countryCode, cost:0, days:'-' };
-        const countryName  = state.lang === 'ar' ? countryObj.ar : countryObj.en;
-        const shippingLyd  = countryObj.cost === 0 ? 0 : countryObj.cost / currencies['USD'].rate;
-        const productsLyd  = cart.reduce((s,i) => s + i.price * i.qty, 0);
-        const grandLyd     = productsLyd + shippingLyd;
-        const fullAddress  = `${address}, ${city}${zip ? ' '+zip : ''}, ${countryName}`;
-        const itemsList    = cart.map(i => `${i.name} (×${i.qty}) — ${formatPrice(i.price*i.qty)}`).join('\n');
-        const payLabel     = paymentMethod === 'transfer' ? 'تحويل بنكي' : 'الدفع عند التوصيل';
-        const accountInfo  = paymentMethod === 'transfer'
+        const countryObj  = countries.find(c => c.code === countryCode) || { ar:countryCode, en:countryCode, cost:0, days:'-' };
+        const countryName = state.lang === 'ar' ? countryObj.ar : countryObj.en;
+        const shippingLyd = countryObj.cost === 0 ? 0 : countryObj.cost / currencies['USD'].rate;
+        const productsLyd = cart.reduce((s,i) => s + i.price * i.qty, 0);
+        const grandLyd    = productsLyd + shippingLyd;
+        const fullAddress = `${address}, ${city}${zip ? ' '+zip : ''}, ${countryName}`;
+        const itemsList   = cart.map(i => `${i.name}${i.cat==='Arvea'?' 🌿':''} (×${i.qty}) — ${formatPrice(i.price*i.qty)}`).join('\n');
+        const payLabel    = paymentMethod === 'transfer' ? 'تحويل بنكي' : 'الدفع عند التوصيل';
+        const accountInfo = paymentMethod === 'transfer'
             ? 'محمد عبد السلام محمد صالح — مصرف الصحاري: 2010393957 — IBAN: LY62006020000002010393957'
             : 'الدفع نقداً عند الاستلام';
 
-        // ⚠️ Replace 'template_0qtw5sv' with your EmailJS template ID if different
         await emailjs.send('service_bzjvjbd', 'template_0qtw5sv', {
-            to_name:        'صاحب المتجر',
-            from_name:      name,
-            from_email:     email || 'غير مقدم',
-            phone:          phoneClean,
-            address:        fullAddress,
-            country:        countryName,
-            items:          itemsList,
+            to_name:'صاحب المتجر', from_name:name,
+            from_email: email || 'غير مقدم', phone:phoneClean,
+            address:fullAddress, country:countryName, items:itemsList,
             products_total: formatPrice(productsLyd),
             shipping_cost:  countryObj.cost === 0 ? 'مجاني' : formatShipping(countryObj.cost),
             shipping_days:  countryObj.days,
             grand_total:    formatPrice(grandLyd),
             currency:       state.currency,
-            payment_method: payLabel,
-            account_info:   accountInfo,
+            payment_method: payLabel, account_info: accountInfo,
             receipt_image:  receiptURL ? '[صورة الإيصال مرفقة]' : 'لا يوجد',
-            date:           new Date().toLocaleString('ar-LY')
+            date: new Date().toLocaleString('ar-LY')
         });
 
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         orders.push({
-            name, phone: phoneClean, email, address: fullAddress, country: countryName,
-            items: itemsList, productsTotal: formatPrice(productsLyd),
+            name, phone:phoneClean, email, address:fullAddress, country:countryName,
+            items:itemsList, productsTotal:formatPrice(productsLyd),
             shippingCost: countryObj.cost === 0 ? 'مجاني' : formatShipping(countryObj.cost),
-            grandTotal: formatPrice(grandLyd), currency: state.currency,
-            paymentMethod: payLabel,
+            grandTotal:formatPrice(grandLyd), currency:state.currency,
+            paymentMethod:payLabel,
             status: paymentMethod === 'transfer' ? 'في انتظار الدفع' : 'في انتظار التأكيد',
             date: new Date().toISOString()
         });
@@ -771,11 +744,9 @@ async function submitOrder(event) {
         clearCart(); closeCheckout();
 
     } catch(err) {
-        console.error('Order error:', err);
-        toast(getTranslation('orderError'));
+        console.error('Order error:', err); toast(getTranslation('orderError'));
     } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '✅ ' + getTranslation('confirmOrder');
+        submitBtn.disabled = false; submitBtn.textContent = '✅ ' + getTranslation('confirmOrder');
     }
 }
 
